@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { checkBreaches } from '@/lib/hibp';
-import { Finding, RiskLevel } from '@/lib/types';
+import { Finding, RiskLevel, BreachSource } from '@/lib/types';
 
 interface ScanRequestBody {
   email: string;
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
         ...breachData.map((breach, index) => ({
           id: `breach-${index}`,
           source: breach.name,
-          type: 'ë¤í¬ì¹' as const, // Default to darkweb, could be enhanced with API data
+          type: 'ë¤í¬ì¹' as BreachSource, // Default to darkweb, could be enhanced with API data
           dateFound: breach.breachDate,
           riskLevel: breach.riskLevel || ('ì¤ê°' as RiskLevel),
           exposedData: breach.dataClasses,
