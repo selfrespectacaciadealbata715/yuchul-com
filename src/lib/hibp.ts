@@ -7,31 +7,31 @@ const HIBP_API_URL = 'https://api.pwnedpasswords.com/range';
 
 // Korean translations for exposed data types
 const DATA_TYPE_TRANSLATIONS: Record<string, string> = {
-  'Emails': 'ì´ë©ì¼',
-  'Passwords': 'ë¹ë°ë²í¸',
-  'Names': 'ì´ë¦',
-  'Usernames': 'ì¬ì©ìëª',
-  'Phone Numbers': 'ì íë²í¸',
-  'Physical Addresses': 'ì£¼ì',
-  'Dates of Birth': 'ìëìì¼',
-  'Payment Card Data': 'ê²°ì ì¹´ëì ë³´',
-  'IP Addresses': 'IPì£¼ì',
-  'Credit Card Data': 'ì ì©ì¹´ëì ë³´',
-  'Social Media Profiles': 'ììë¯¸ëì´ê³ì ',
-  'Job Titles': 'ì§ê¸',
-  'Postal Codes': 'ì°í¸ë²í¸',
-  'Gender': 'ì±ë³',
-  'Government IDs': 'ì ë¶ID',
-  'Security Questions': 'ë³´ìì§ë¬¸',
-  'Historical Passwords': 'ê³¼ê±°ë¹ë°ë²í¸',
+  'Emails': '이메일',
+  'Passwords': '비밀번호',
+  'Names': '이름',
+  'Usernames': '사용자명',
+  'Phone Numbers': '전화번호',
+  'Physical Addresses': '주소',
+  'Dates of Birth': '생년월일',
+  'Payment Card Data': '결제카드정보',
+  'IP Addresses': 'IP주소',
+  'Credit Card Data': '신용카드정보',
+  'Social Media Profiles': '소셜미디어계정',
+  'Job Titles': '직급',
+  'Postal Codes': '우편번호',
+  'Gender': '성별',
+  'Government IDs': '정부ID',
+  'Security Questions': '보안질문',
+  'Historical Passwords': '과거비밀번호',
 };
 
 // Risk level mapping
-const RISK_LABEL_MAP: Record<string, 'ëì' | 'ì¤ê°' | 'ë®ì'> = {
-  'Critical': 'ëì',
-  'High': 'ëì',
-  'Medium': 'ì¤ê°',
-  'Low': 'ë®ì',
+const RISK_LABEL_MAP: Record<string, '높음' | '중간' | '낮음'> = {
+  'Critical': '높음',
+  'High': '높음',
+  'Medium': '중간',
+  'Low': '낮음',
 };
 
 interface XposedOrNotCheckResponse {
@@ -80,7 +80,7 @@ export interface BreachData {
   isRetired: boolean;
   isSpamList: boolean;
   logoPath: string;
-  riskLevel?: 'ëì' | 'ì¤ê°' | 'ë®ì';
+  riskLevel?: '높음' | '중간' | '낮음';
 }
 
 function translateExposedData(xposedDataString: string): string[] {
@@ -120,7 +120,7 @@ export async function checkBreaches(email: string): Promise<BreachData[] | null>
 
     // Get risk level from summary
     const riskLabel = data.BreachesSummary?.risk_label || 'Low';
-    const riskLevel = RISK_LABEL_MAP[riskLabel] || 'ë®ì';
+    const riskLevel = RISK_LABEL_MAP[riskLabel] || '낮음';
 
     // Map API response to BreachData format
     const breaches: BreachData[] = data.ExposedBreaches.breaches_details.map(
