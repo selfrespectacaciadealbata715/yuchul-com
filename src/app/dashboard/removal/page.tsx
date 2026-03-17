@@ -21,7 +21,7 @@ export default function RemovalPage() {
         const template = generateRemovalRequestEmail(finding.source, {
           name: '이름',
           email: 'example@gmail.com',
-        });
+        }, finding.exposedData);
 
         navigator.clipboard.writeText(template.body);
         setCopiedId(requestId);
