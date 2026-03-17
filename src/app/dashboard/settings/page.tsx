@@ -27,7 +27,7 @@ export default function SettingsPage() {
     }
   };
 
-  const handleToggleNotification = (key: keyof typeof user!.notificationPreferences) => {
+  const handleToggleNotification = (key: string) => {
     if (user) {
       updateNotificationPreferences({
         [key]: !user.notificationPreferences[key],
@@ -294,4 +294,4 @@ export default function SettingsPage() {
       </div>
     </DashboardLayout>
   );
-            }
+}
