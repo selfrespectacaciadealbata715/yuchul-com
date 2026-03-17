@@ -16,8 +16,10 @@ export default function RiskGauge({
   // Clamp score between 0 and 100
   const normalizedScore = Math.min(Math.max(score, 0), 100);
 
-  // Calculate rotation (0-100 maps to 180-0 degrees)
-  const rotation = 180 - (normalizedScore / 100) * 180;
+  // Calculate circumference for progress circle (semi-circle)
+  // SVG path uses radius 40 (from x=10 to x=90, center at x=50)
+  const arcRadius = 40;
+  const circumference = Math.PI * arcRadius; // Semi-circle circumference
 
   const sizeClasses = {
     sm: 'w-24 h-24',
@@ -32,15 +34,15 @@ export default function RiskGauge({
   };
 
   const getRiskColor = () => {
-    if (normalizedScore < 30) return '#00b894';
-    if (normalizedScore < 60) return '#fdcb6e';
-    return '#e17055';
+    if (normalizedScore < 30) return '#00b894'; // Green - safe
+    if (normalizedScore < 60) return '#fdcb6e'; // Yellow - warning
+    return '#e17055'; // Red - danger
   };
 
   const getRiskLabel = () => {
-    if (normalizedScore < 30) return '낮음';
-    if (normalizedScore < 60) return '중간';
-    return '높음';
+    if (normalizedScore < 30) return 'ìì ';
+    if (normalizedScore < 60) return 'ì£¼ì';
+    return 'ìí';
   };
 
   const getRiskLabelColor = () => {
@@ -49,69 +51,58 @@ export default function RiskGauge({
     return 'text-danger';
   };
 
+  // Calculate stroke-dashoffset for progress arc
+  // 0% progress = full offset, 100% progress = 0 offset
+  const strokeDashoffset = circumference - (normalizedScore / 100) * circumference;
+
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
       <div className={`relative ${sizeClasses[size]}`}>
-        {/* Background circle */}
         <svg
           className="absolute inset-0 w-full h-full"
           viewBox="0 0 100 100"
-          style={{
-            transform: 'scaleX(-1)',
-          }}
+          preserveAspectRatio="xMidYMid meet"
         >
-          {/* Background arc */}
-          <circle
-            cx="50"
-            cy="50"
-            r="45"
+          {/* Background semi-circle arc */}
+          <path
+            d="M 10 50 A 40 40 0 0 1 90 50"
             fill="none"
             stroke="#2d2d44"
             strokeWidth="8"
+            strokeLinecap="round"
           />
 
-          {/* Score arc */}
-          <circle
-            cx="50"
-            cy="50"
-            r="45"
+          {/* Progress semi-circle arc */}
+          <path
+            d="M 10 50 A 40 40 0 0 1 90 50"
             fill="none"
             stroke={getRiskColor()}
             strokeWidth="8"
-            strokeDasharray={`${(normalizedScore / 100) * 141.3} 141.3`}
             strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
             style={{
-              transition: 'stroke-dasharray 0.5s ease',
+              transition: 'stroke-dashoffset 0.6s ease, stroke 0.3s ease',
+              transformOrigin: '50px 50px',
             }}
           />
         </svg>
 
         {/* Center content */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center pt-2">
           <div className={`${textSizeClasses[size]} font-bold gradient-text`}>
             {normalizedScore}
           </div>
-          <div className={`text-sm font-medium ${getRiskLabelColor()}`}>
+          <div className={`text-sm font-medium ${getRiskLabelColor()} mt-1`}>
             {getRiskLabel()}
           </div>
-        </div>
-
-        {/* Needle */}
-        <div
-          className="absolute top-1/2 left-1/2 origin-left transform -translate-y-1/2"
-          style={{
-            transform: `translateX(-50%) translateY(-50%) rotate(${rotation}deg)`,
-            transition: 'transform 0.5s ease',
-          }}
-        >
-          <div className="w-20 h-2 rounded-full bg-gradient-primary shadow-lg" />
         </div>
       </div>
 
       {/* Labels */}
-      <div className="mt-4 flex justify-between w-full max-w-xs text-xs text-gray-500 font-medium">
-        <span>안전</span>
-        <span>위험</span>
+      <div className="mt-6 flex justify-between w-full max-w-xs text-xs text-gray-500 font-medium px-2">
+        <span>ìì£</span>
+        <span>ìí</span>
       </div>
     </div>
   );
