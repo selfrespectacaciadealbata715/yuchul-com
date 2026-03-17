@@ -31,16 +31,16 @@ export async function POST(request: NextRequest) {
     if (breachData && breachData.length > 0) {
       // Map breach data to Finding format
       findings.push(
-        ...breachData.map((breach, index) => ({
+        ...breachData.map((breach, index): Finding => ({
           id: `breach-${index}`,
           source: breach.name,
-          type: 'ë¤í¬ì¹' as BreachSource, // Default to darkweb, could be enhanced with API data
+          type: 'ë¤í¬ì¹',
           dateFound: breach.breachDate,
-          riskLevel: breach.riskLevel || ('ì¤ê°' as RiskLevel),
+          riskLevel: breach.riskLevel || 'ì¤ê°',
           exposedData: breach.dataClasses,
           description: breach.description,
           url: breach.domain ? `https://${breach.domain}` : undefined,
-          status: 'new' as const,
+          status: 'new',
         }))
       );
     }
