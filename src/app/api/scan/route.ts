@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { checkBreaches } from '@/lib/hibp';
-import { Finding } from '@/lib/types';
+import { Finding, RiskLevel, BreachSource } from '@/lib/types';
 
 interface ScanRequestBody {
   email: string;
@@ -30,19 +30,21 @@ export async function POST(request: NextRequest) {
 
     if (breachData && breachData.length > 0) {
       // Map breach data to Finding format
-      findings.push(
-        ...breachData.map((breach, index): Finding => ({
+      breachData.forEach((breach, index) => {
+        const riskLevel: RiskLevel = breach.riskLevel || '중간';
+        const finding: Finding = {
           id: `breach-${index}`,
           source: breach.name,
-          type: '다크웹',
+          type: '다크웹' as BreachSource,
           dateFound: breach.breachDate,
-          riskLevel: breach.riskLevel || '중간',
+          riskLevel,
           exposedData: breach.dataClasses,
           description: breach.description,
           url: breach.domain ? `https://${breach.domain}` : undefined,
           status: 'new',
-        }))
-      );
+        };
+        findings.push(finding);
+      });
     }
 
     // Calculate risk score (0-100)
