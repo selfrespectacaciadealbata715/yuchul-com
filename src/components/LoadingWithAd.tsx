@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { CheckCircle, Shield, Search, Database } from 'lucide-react';
 import AdBanner from './AdBanner';
 

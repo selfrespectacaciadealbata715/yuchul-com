@@ -14,7 +14,7 @@ import Link from 'next/link';
 
 export default function Home() {
   const router = useRouter();
-  const { setScanResults, setIsScanning, setScanProgress } = useAppStore();
+  const { setIsScanning, setScanProgress } = useAppStore();
   const [user, setUser] = useState<User | null>(null);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
@@ -28,7 +28,7 @@ export default function Home() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleScan = async (data: ScanInput) => {
+  const handleScan = async (_data: ScanInput) => {
     // Check if user is logged in
     if (!user) {
       setShowLoginPrompt(true);

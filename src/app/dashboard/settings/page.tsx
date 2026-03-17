@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState } from 'react';
 import DashboardLayout from '@/components/DashboardLayout';
 import { useAppStore } from '@/lib/store';
@@ -30,7 +32,7 @@ export default function SettingsPage() {
   const handleToggleNotification = (key: string) => {
     if (user) {
       updateNotificationPreferences({
-        [key]: !(user.notificationPreferences as Record<string, boolean>)[key],
+        [key]: !(user.notificationPreferences as unknown as Record<string, boolean>)[key],
       });
     }
   };

@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import {
-  Shield,
   Search,
   Bell,
   Trash2,
@@ -10,7 +9,6 @@ import {
   Lock,
   Zap,
   CheckCircle,
-  Globe,
   Code,
 } from 'lucide-react';
 

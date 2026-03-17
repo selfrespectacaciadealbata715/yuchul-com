@@ -49,21 +49,6 @@ interface AppStore {
   reset: () => void;
 }
 
-const initialUser: User = {
-  id: 'user_' + Math.random().toString(36).substr(2, 9),
-  email: '',
-  name: '',
-  createdAt: new Date().toISOString(),
-  identifiers: [],
-  notificationPreferences: {
-    emailNotifications: true,
-    webNotifications: true,
-    newBreachAlert: true,
-    removalStatus: true,
-    weeklyReport: true,
-  },
-};
-
 export const useAppStore = create<AppStore>((set) => ({
   user: null,
   scanResults: null,

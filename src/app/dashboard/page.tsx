@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useAppStore } from '@/lib/store';
 import DashboardLayout from '@/components/DashboardLayout';
 import RiskGauge from '@/components/RiskGauge';

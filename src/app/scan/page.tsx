@@ -1,7 +1,8 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useAppStore } from '@/lib/store';
 import { supabase, signInWithGoogle, canScan, recordScan } from '@/lib/supabase';
 import ScanForm from '@/components/ScanForm';
@@ -9,11 +10,10 @@ import FindingCard from '@/components/FindingCard';
 import LoadingWithAd from '@/components/LoadingWithAd';
 import { ArrowLeft, Lock, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
-import type { ScanInput } from '@/lib/types';
+import type { ScanInput, Finding } from '@/lib/types';
 import type { User } from '@supabase/supabase-js';
 
 export default function ScanPage() {
-  const router = useRouter();
   const {
     isScanning,
     scanProgress,
@@ -68,35 +68,35 @@ export default function ScanPage() {
     setScanLimit(canScan());
 
     // Mock results
-    const mockFindings = [
+    const mockFindings: Finding[] = [
       {
         id: '1',
         source: 'Collection #1',
-        type: 'ë¤í¬ì¹' as const,
+        type: '\uB2E4\uD06C\uC6F9',
         dateFound: '2024-01-15',
-        riskLevel: 'ëì' as const,
-        exposedData: ['ì´ë©ì¼', 'ë¹ë°ë²í¸'],
-        description: 'ìë ¤ì§ ëê·ëª¨ ë°ì´í° ì ì¶ìì ë°ê²¬ëììµëë¤.',
+        riskLevel: '\uB192\uC74C',
+        exposedData: ['\uC774\uBA54\uC77C', '\uBE44\uBC00\uBC88\uD638'],
+        description: '\uC54C\uB824\uC9C4 \uB300\uADDC\uBAA8 \uB370\uC774\uD130 \uC720\uCD9C\uC5D0\uC11C \uBC1C\uACAC\uB418\uC5C8\uC2B5\uB2C8\uB2E4.',
         status: 'new' as const,
       },
       {
         id: '2',
-        source: '123RF ì ì¶',
-        type: 'ë¤í¬ì¹' as const,
+        source: '123RF \uC720\uCD9C',
+        type: '\uB2E4\uD06C\uC6F9',
         dateFound: '2024-02-10',
-        riskLevel: 'ì¤ê°' as const,
-        exposedData: ['ì´ë©ì¼', 'ì´ë¦', 'ì íë²í¸'],
-        description: '123RF ì¹ì¬ì´í¸ìì ì ì¶ë ì ë³´',
+        riskLevel: '\uC911\uAC04',
+        exposedData: ['\uC774\uBA54\uC77C', '\uC774\uB984', '\uC804\uD654\uBC88\uD638'],
+        description: '123RF \uC6F9\uC0AC\uC774\uD2B8\uC5D0\uC11C \uC720\uCD9C\uB41C \uC815\uBCF4',
         status: 'new' as const,
       },
       {
         id: '3',
-        source: 'ë¤ì´ë² ê²ìê²°ê³¼',
-        type: 'ìí¼ì¤ì¹' as const,
+        source: '\uB124\uC774\uBC84 \uAC80\uC0C9\uACB0\uACFC',
+        type: '\uC11C\uD53C\uC2A4\uC6F9',
         dateFound: '2024-03-01',
-        riskLevel: 'ì¤ê°' as const,
-        exposedData: ['ì´ë¦', 'ì´ë©ì¼'],
-        description: 'ë¤ì´ë² ê²ì ê²°ê³¼ì ê°ì¸ì ë³´ê° ë¸ì¶ëì´ ììµëë¤.',
+        riskLevel: '\uC911\uAC04',
+        exposedData: ['\uC774\uB984', '\uC774\uBA54\uC77C'],
+        description: '\uB124\uC774\uBC84 \uAC80\uC0C9 \uACB0\uACFC\uC5D0 \uAC1C\uC778\uC815\uBCF4\uAC00 \uB178\uCD9C\uB418\uC5B4 \uC788\uC2B5\uB2C8\uB2E4.',
         status: 'new' as const,
       },
     ];
@@ -116,7 +116,7 @@ export default function ScanPage() {
     addRemovalRequest({
       id: 'req_' + Math.random().toString(36).substr(2, 9),
       findingId,
-      status: 'ëê¸°ì¤',
+      status: '\uB300\uAE30\uC911',
       createdAt: new Date().toISOString(),
       progress: 0,
       requestType: 'automatic',
@@ -133,11 +133,11 @@ export default function ScanPage() {
             className="inline-flex items-center space-x-2 text-gray-400 hover:text-primary transition-smooth mb-6"
           >
             <ArrowLeft size={20} />
-            <span>ëìê°ê¸°</span>
+            <span>{'\uB3CC\uC544\uAC00\uAE30'}</span>
           </Link>
-          <h1 className="text-4xl font-bold mb-2">ê°ì¸ì ë³´ ì ì¶ íì¸</h1>
+          <h1 className="text-4xl font-bold mb-2">{'\uAC1C\uC778\uC815\uBCF4 \uC720\uCD9C \uD655\uC778'}</h1>
           <p className="text-gray-400">
-            ë¹ì ì ê°ì¸ì ë³´ê° ì ì¶ëìëì§ ì§ê¸ ë°ë¡ íì¸í´ë³´ì¸ì.
+            {'\uBE44\uC2E0\uC758 \uAC1C\uC778\uC815\uBCF4\uAC00 \uC720\uCD9C\uB418\uC5C8\uB294\uC9C0 \uC9C0\uAE08 \uBC14\uB85C \uD655\uC778\uD574\uBCF4\uC138\uC694.'}
           </p>
         </div>
 
@@ -145,9 +145,9 @@ export default function ScanPage() {
         {!user ? (
           <div className="bg-dark-card border border-dark-border rounded-2xl p-12 text-center mb-12">
             <Lock size={48} className="mx-auto text-primary mb-4" />
-            <h2 className="text-2xl font-semibold mb-3">Google ë¡ê·¸ì¸ íì</h2>
+            <h2 className="text-2xl font-semibold mb-3">{'Google \uB85C\uADF8\uC778 \uD544\uC694'}</h2>
             <p className="text-gray-400 mb-6">
-              ì¤í¸ ë°©ì§ë¥¼ ìí´ Google ë¡ê·¸ì¸ í ì¤ìºí  ì ììµëë¤.
+              {'\uC2A4\uD338 \uBC29\uC9C0\uB97C \uC704\uD574 Google \uB85C\uADF8\uC778 \uD6C4 \uC2A4\uCE94\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.'}
             </p>
             <button
               onClick={() => signInWithGoogle()}
@@ -159,10 +159,10 @@ export default function ScanPage() {
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
               </svg>
-              <span>Googleë¡ ë¡ê·¸ì¸</span>
+              <span>{'Google\uB85C \uB85C\uADF8\uC778'}</span>
             </button>
             <p className="text-xs text-gray-500 mt-4">
-              ì£¼ 2í ë¬´ë£ ì¤ìº â¢ ê°ì¸ì ë³´ë ì ì¥íì§ ììµëë¤
+              {'\uC8FC 2\uD68C \uBB34\uB8CC \uC2A4\uCE94 \u2022 \uAC1C\uC778\uC815\uBCF4\uB294 \uC800\uC7A5\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4'}
             </p>
           </div>
         ) : (
@@ -172,10 +172,10 @@ export default function ScanPage() {
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-5 mb-6 flex items-start space-x-3">
                 <AlertTriangle className="text-yellow-400 flex-shrink-0 mt-0.5" size={20} />
                 <div>
-                  <p className="text-yellow-300 font-medium">ì£¼ê° ì¤ìº íë ëë¬</p>
+                  <p className="text-yellow-300 font-medium">{'\uC8FC\uAC04 \uC2A4\uCE94 \uD55C\uB3C4 \uB3C4\uB2EC'}</p>
                   <p className="text-sm text-gray-400 mt-1">
-                    ì´ë² ì£¼ ì¤ìº 2íë¥¼ ëª¨ë ì¬ì©íìµëë¤.{' '}
-                    {scanLimit.nextReset.toLocaleDateString('ko-KR')}ì ì´ê¸°íë©ëë¤.
+                    {'\uC774\uBC88 \uC8FC \uC2A4\uCE94 2\uD68C\uB97C \uBAA8\uB450 \uC0AC\uC6A9\uD558\uC600\uC2B5\uB2C8\uB2E4. '}
+                    {scanLimit.nextReset.toLocaleDateString('ko-KR')}{'\uC5D0 \uCD08\uAE30\uD654\uB429\uB2C8\uB2E4.'}
                   </p>
                 </div>
               </div>
@@ -184,14 +184,14 @@ export default function ScanPage() {
             {/* Scan Remaining */}
             {scanLimit.allowed && !isScanning && !scanResults && (
               <div className="mb-6 text-sm text-gray-400">
-                ì´ë² ì£¼ ë¨ì ì¤ìº: <strong className="text-primary">{scanLimit.remaining}í</strong> / 2í
+                {'\uC774\uBC88 \uC8FC \uB0A8\uC740 \uC2A4\uCE94: '}<strong className="text-primary">{scanLimit.remaining}{'\uD68C'}</strong> / 2{'\uD68C'}
               </div>
             )}
 
             {/* Scan Form */}
             {!isScanning && !scanResults && (
               <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism mb-12">
-                <h2 className="text-2xl font-semibold mb-6">ì ë³´ ìë ¥</h2>
+                <h2 className="text-2xl font-semibold mb-6">{'\uC815\uBCF4 \uC785\uB825'}</h2>
                 <ScanForm
                   onSubmit={handleScan}
                   isLoading={isScanning}
@@ -212,19 +212,18 @@ export default function ScanPage() {
             <div className="mb-8">
               <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-2xl font-semibold">ì¤ìº ê²°ê³¼</h2>
+                  <h2 className="text-2xl font-semibold">{'\uC2A4\uCE94 \uACB0\uACFC'}</h2>
                   <div className="text-right">
                     <div className="text-3xl font-bold gradient-text">
                       {scanResults.riskScore}
                     </div>
-                    <div className="text-sm text-gray-400">ìí ì ì</div>
+                    <div className="text-sm text-gray-400">{'\uC704\uD5D8 \uC810\uC218'}</div>
                   </div>
                 </div>
 
                 <div className="bg-dark-border/50 rounded-lg p-4 mb-6">
                   <p className="text-gray-300">
-                    <strong>{scanResults.findings.length}</strong>ê±´ì ì ì¶ì´
-                    ë°ê²¬ëììµëë¤.
+                    <strong>{scanResults.findings.length}</strong>{'\uAC74\uC758 \uC720\uCD9C\uC774 \uBC1C\uACAC\uB418\uC5C8\uC2B5\uB2C8\uB2E4.'}
                   </p>
                 </div>
 
@@ -246,17 +245,17 @@ export default function ScanPage() {
             <div className="flex flex-col md:flex-row gap-4">
               <button
                 onClick={() => {
-                  setScanResults(null);
+                  setScanResults(null as unknown as Parameters<typeof setScanResults>[0]);
                 }}
                 className="flex-1 px-6 py-3 bg-dark-card border border-dark-border rounded-lg text-white font-semibold hover:border-primary transition-smooth"
               >
-                ë¤ì ì¤ìº
+                {'\uB2E4\uC2DC \uC2A4\uCE94'}
               </button>
               <Link
                 href="/dashboard"
                 className="flex-1 px-6 py-3 bg-gradient-primary text-white font-semibold rounded-lg hover:opacity-90 transition-smooth text-center"
               >
-                ëìë³´ëë¡ ì´ë
+                {'\uB300\uC2DC\uBCF4\uB4DC\uB85C \uC774\uB3D9'}
               </Link>
             </div>
           </div>
@@ -266,7 +265,7 @@ export default function ScanPage() {
         {!scanResults && !isScanning && user && scanLimit.allowed && (
           <div className="text-center py-12">
             <p className="text-gray-400 text-lg">
-              ìì ììì ìì±íê³  ì¤ìºì ììíì¸ì.
+              {'\uC704\uC5D0 \uC591\uC2DD\uC744 \uC791\uC131\uD558\uACE0 \uC2A4\uCE94\uC744 \uC2DC\uC791\uD558\uC138\uC694.'}
             </p>
           </div>
         )}
