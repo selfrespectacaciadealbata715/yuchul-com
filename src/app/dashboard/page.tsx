@@ -6,7 +6,6 @@ import RiskGauge from '@/components/RiskGauge';
 import Link from 'next/link';
 import { TrendingUp, AlertCircle, CheckCircle, Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import type { Finding, RemovalRequest } from '@/lib/types';
 
 export default function DashboardPage() {
   const { findings, removalRequests } = useAppStore();
