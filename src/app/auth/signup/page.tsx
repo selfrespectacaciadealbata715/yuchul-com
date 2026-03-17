@@ -16,7 +16,7 @@ export default function SignupPage() {
     try {
       await signInWithGoogle();
     } catch (err) {
-      setError('ê°ì ì¤ ì¤ë¥ê° ë°ìíìµëë¤.');
+      setError('가입 중 오류가 발생했습니다.');
       setIsLoading(false);
     }
   };
@@ -27,11 +27,11 @@ export default function SignupPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-sm">ì ì¶</span>
+            <span className="text-white font-bold text-sm">유출</span>
           </div>
-          <h1 className="text-2xl font-bold mb-2">íìê°ì</h1>
+          <h1 className="text-2xl font-bold mb-2">회원가입</h1>
           <p className="text-gray-400">
-            Google ê³ì ì¼ë¡ ê°ìíê³  ëìë³´ëì ì ìíì¸ì.
+            Google 계정으로 가입하고 대시보드에 접속하세요.
           </p>
         </div>
 
@@ -48,29 +48,29 @@ export default function SignupPage() {
           disabled={isLoading}
           className="w-full px-6 py-3 bg-gradient-primary text-white font-semibold rounded-lg hover:opacity-90 disabled:opacity-50 transition-smooth flex items-center justify-center space-x-2 mb-6"
         >
-          <span>{isLoading ? 'ê°ì ì¤...' : 'Googleë¡ ê°ì'}</span>
+          <span>{isLoading ? '가입 중...' : 'Google로 가입'}</span>
           {!isLoading && <ArrowRight size={20} />}
         </button>
 
         {/* Terms & Privacy */}
         <p className="text-center text-sm text-gray-400 mb-8">
-          ê°ìíë©´{' '}
+          가입하면{' '}
           <a href="#terms" className="text-primary hover:underline">
-            ì´ì©ì½ê´
+            이용약관
           </a>
-          ê³¼{' '}
+          과{' '}
           <a href="#privacy" className="text-primary hover:underline">
-            ê°ì¸ì ë³´ì²ë¦¬ë°©ì¹¨
+            개인정보처리방침
           </a>
-          ì ëìí©ëë¤
+          에 동의합니다
         </p>
 
         {/* Login Link */}
         <div className="text-center mb-6">
           <p className="text-gray-400">
-            ì´ë¯¸ ê³ì ì´ ìì¼ì ê°ì?{' '}
+            이미 계정이 있으신가요?{' '}
             <Link href="/auth/login" className="text-primary hover:underline">
-              ë¡ê·¸ì¸
+              로그인
             </Link>
           </p>
         </div>
@@ -81,7 +81,7 @@ export default function SignupPage() {
             href="/"
             className="text-gray-500 hover:text-gray-400 text-sm transition-smooth"
           >
-            íì¼ë¡ ëìê°ê¸°
+            홈으로 돌아가기
           </Link>
         </div>
       </div>
