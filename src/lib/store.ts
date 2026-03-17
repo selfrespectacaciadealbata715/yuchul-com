@@ -6,6 +6,7 @@ import type {
   RemovalRequest,
   Identifier,
   NotificationPreferences,
+  ScanInput,
 } from './types';
 
 interface AppStore {
@@ -15,54 +16,47 @@ interface AppStore {
   removalRequests: RemovalRequest[];
   isScanning: boolean;
   scanProgress: number;
+  pendingScanInput: ScanInput | null;
 
-  // User actions
   setUser: (user: User | null) => void;
   updateUser: (user: Partial<User>) => void;
-
-  // Scan actions
   setScanResults: (results: ScanResult | null) => void;
   clearScanResults: () => void;
   setIsScanning: (isScanning: boolean) => void;
   setScanProgress: (progress: number) => void;
-
-  // Findings actions
+  setPendingScanInput: (input: ScanInput | null) => void;
   setFindings: (findings: Finding[]) => void;
   addFinding: (finding: Finding) => void;
   updateFinding: (findingId: string, update: Partial<Finding>) => void;
   removeFinding: (findingId: string) => void;
-
-  // Removal requests actions
   setRemovalRequests: (requests: RemovalRequest[]) => void;
   addRemovalRequest: (request: RemovalRequest) => void;
   updateRemovalRequest: (requestId: string, update: Partial<RemovalRequest>) => void;
   removeRemovalRequest: (requestId: string) => void;
-
-  // Identifier management
   addIdentifier: (identifier: Identifier) => void;
   removeIdentifier: (identifierId: string) => void;
-
-  // Notification preferences
   updateNotificationPreferences: (prefs: Partial<NotificationPreferences>) => void;
-
-  // Reset
   reset: () => void;
 }
 
-const initialUser: User = {
-  id: 'user_' + Math.random().toString(36).substr(2, 9),
-  email: '',
-  name: '',
-  createdAt: new Date().toISOString(),
-  identifiers: [],
-  notificationPreferences: {
-    emailNotifications: true,
-    webNotifications: true,
-    newBreachAlert: true,
-    removalStatus: true,
-    weeklyReport: true,
-  },
-};
+function saveTo(key: string, value: any) {
+  if (typeof window === 'undefined') return;
+  if (value === null || (Array.isArray(value) && value.length === 0)) {
+    localStorage.removeItem(key);
+  } else {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+}
+
+function loadFrom<T>(key: string, fallback: T): T {
+  if (typeof window === 'undefined') return fallback;
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : fallback;
+  } catch {
+    return fallback;
+  }
+}
 
 export const useAppStore = create<AppStore>((set) => ({
   user: null,
@@ -71,6 +65,7 @@ export const useAppStore = create<AppStore>((set) => ({
   removalRequests: [],
   isScanning: false,
   scanProgress: 0,
+  pendingScanInput: null,
 
   setUser: (user) => set({ user }),
   updateUser: (update) =>
@@ -78,84 +73,115 @@ export const useAppStore = create<AppStore>((set) => ({
       user: state.user ? { ...state.user, ...update } : null,
     })),
 
-  setScanResults: (results) => set({ scanResults: results }),
-  clearScanResults: () => set({ scanResults: null }),
+  setScanResults: (results) => {
+    saveTo('yuchul_scan_results', results);
+    return set({ scanResults: results });
+  },
+  clearScanResults: () => {
+    saveTo('yuch_scan_results', null);
+    return set({ scanResults: null });
+  },
   setIsScanning: (isScanning) => set({ isScanning }),
-  setScanProgress: (progress) => set({ scanProgress: progress }),
+  setScanProgress: (progress) => set({ scanProgress, progress }),
+  setPendingScanInput: (input) => {
+    saveTo('yuchul_pending_scan', input);
+    return set({ pendingScanInput: input });
+  },
 
-  setFindings: (findings) => set({ findings }),
+  setFindings: (findings) => {
+    saveTo('yuch_findings', findings);
+    return set({ findings });
+  },
   addFinding: (finding) =>
-    set((state) => ({
-      findings: [...state.findings, finding],
-    })),
+    set((state) => {
+      const next = [...state.findings, finding];
+      saveTo('yuchul_findings', next);
+      return { findings: next };
+    }),
   updateFinding: (findingId, update) =>
-    set((state) => ({
-      findings: state.findings.map((f) =>
+    set((state) => {
+      const next = state.findings.map((f) =>
         f.id === findingId ? { ...f, ...update } : f
-      ),
-    })),
+      );
+      saveTo('yuchul_findings', next);
+      return { findings: next };
+    }),
   removeFinding: (findingId) =>
-    set((state) => ({
-      findings: state.findings.filter((f) => f.id !== findingId),
-    })),
+    set((state) => {
+      const next = state.findings.filter((f) => f.id !== findingId);
+      saveTo('yuchul_findings', next);
+      return { findings: next };
+    }),
 
-  setRemovalRequests: (requests) => set({ removalRequests: requests }),
+  setRemovalRequests: (requests) => {
+    saveTo('yuchul_removal_requests', requests);
+    return set({ removalRequests: requests });
+  },
   addRemovalRequest: (request) =>
-    set((state) => ({
-      removalRequests: [...state.removalRequests, request],
-    })),
+    set((state) => {
+      const next = [...state.removalRequests, request];
+      saveTo('yuch_removal_requests', next);
+      return { removalRequests: next };
+    }),
   updateRemovalRequest: (requestId, update) =>
-    set((state) => ({
-      removalRequests: state.removalRequests.map((r) =>
+    set((state) => {
+      const next = state.removalRequests.map((r) =>
         r.id === requestId ? { ...r, ...update } : r
-      ),
-    })),
+      );
+      saveTo('yuchul_removal_requests', next);
+      return { removalRequests: next };
+    }),
   removeRemovalRequest: (requestId) =>
-    set((state) => ({
-      removalRequests: state.removalRequests.filter((r) => r.id !== requestId),
-    })),
+    set((state) => {
+      const next = state.removalRequests.filter((r) => r.id !== requestId);
+      saveTo('yuchul_removal_requests', next);
+      return { removalRequests: next };
+    }),
 
   addIdentifier: (identifier) =>
     set((state) => ({
       user: state.user
-        ? {
-            ...state.user,
-            identifiers: [...state.user.identifiers, identifier],
-          }
+        ? { ...state.user, identifiers: [...state.user.identifiers, identifier] }
         : null,
     })),
   removeIdentifier: (identifierId) =>
     set((state) => ({
       user: state.user
-        ? {
-            ...state.user,
-            identifiers: state.user.identifiers.filter(
-              (i) => i.id !== identifierId
-            ),
-          }
+        ? { ...state.user, identifiers: state.user.identifiers.filter((i) => i.id !== identifierId) }
         : null,
     })),
 
   updateNotificationPreferences: (prefs) =>
     set((state) => ({
       user: state.user
-        ? {
-            ...state.user,
-            notificationPreferences: {
-              ...state.user.notificationPreferences,
-              ...prefs,
-            },
-          }
+        ? { ...state.user, notificationPreferences: { ...state.user.notificationPreferences, ...prefs } }
         : null,
     })),
 
-  reset: () =>
-    set({
-      user: null,
-      scanResults: null,
-      findings: [],
-      removalRequests: [],
-      isScanning: false,
-      scanProgress: 0,
-    }),
+  reset: () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('yuchul_pending_scan');
+      localStorage.removeItem('yuchul_scan_results');
+      localStorage.removeItem('yuchul_findings');
+      localStorage.removeItem('yuch_removal_requests');
+    }
+    return set({
+      user: null, scanResults: null, findings: [], removalRequests: [],
+      isScanning: false, scanProgress: 0, pendingScanInput: null,
+    });
+  },
 }));
+
+export function hydrateStore() {
+  const pending = loadFrom<ScanInput | null>('yuchul_pending_scan', null);
+  const results = loadFrom<ScanResult | null>('yuch_scan_results', null);
+  const findings = loadFrom<Finding[]>('yuchul_findings', []);
+  const removals = loadFrom<RemovalRequest[]>('yuchul_removal_requests', []);
+
+  useAppStore.setState({
+    ...(pending ? { pendingScanInput: pending } : {}),
+    ...(results ? { scanResults: results } : {}),
+    ...(findings.length > 0 ? { findings } : {}),
+    ...(removals.length > 0 ? { removalRequests: removals } : {}),
+  });
+}

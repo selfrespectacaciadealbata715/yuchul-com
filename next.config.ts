@@ -1,13 +1,10 @@
-import type { NextConfig } from 'next';x
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  typescript: { ignoreBuildErrors: true },
+  eslint: { ignoreDuringBuilds: true },
   reactStrictMode: true,
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  swcMinify: true,
   images: {
     formats: ['image/avif', 'image/webp'],
   },
