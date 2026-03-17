@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/DashboardLayout';
 import { useAppStore } from '@/lib/store';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Key, Eye, EyeOff, ExternalLink, CheckCircle, XCircle } from 'lucide-react';
 import type { Identifier } from '@/lib/types';
+import { PROVIDERS, getApiKey, setApiKey, removeApiKey, getActiveProviders } from '@/lib/api-keys';
+import type { ProviderId } from '@/lib/api-keys';
 
 export default function SettingsPage() {
   const { user, addIdentifier, removeIdentifier } =
@@ -13,6 +15,85 @@ export default function SettingsPage() {
     type: 'email' as Identifier['type'],
     value: '',
   });
+
+  // API Key management state
+  const [apiKeys, setApiKeys] = useState<Partial<Record<ProviderId, string>>>({});
+  const [editingProvider, setEditingProvider] = useState<ProviderId | null>(null);
+  const [editValue, setEditValue] = useState('');
+  const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
+  const [testResults, setTestResults] = useState<Record<string, 'success' | 'error' | 'testing' | null>>({});
+
+  useEffect(() => {
+    // Load API keys from localStorage on mount
+    const loadedKeys: Partial<Record<ProviderId, string>> = {};
+    PROVIDERS.forEach((p) => {
+      const key = getApiKey(p.id);
+      if (key) loadedKeys[p.id] = key;
+    });
+    setApiKeys(loadedKeys);
+  }, []);
+
+  const handleSaveKey = (providerId: ProviderId) => {
+    if (editValue.trim()) {
+      setApiKey(providerId, editValue.trim());
+      setApiKeys((prev) => ({ ...prev, [providerId]: editValue.trim() }));
+    } else {
+      removeApiKey(providerId);
+      setApiKeys((prev) => {
+        const next = { ...prev };
+        delete next[providerId];
+        return next;
+      });
+    }
+    setEditingProvider(null);
+    setEditValue('');
+  };
+
+  const handleRemoveKey = (providerId: ProviderId) => {
+    removeApiKey(providerId);
+    setApiKeys((prev) => {
+      const next = { ...prev };
+      delete next[providerId];
+      return next;
+    });
+    setTestResults((prev) => ({ ...prev, [providerId]: null }));
+  };
+
+  const handleTestKey = async (providerId: ProviderId) => {
+    const key = apiKeys[providerId];
+    if (!key) return;
+
+    setTestResults((prev) => ({ ...prev, [providerId]: 'testing' }));
+
+    try {
+      const res = await fetch('/api/providers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          provider: providerId,
+          apiKey: key,
+          email: 'test@example.com',
+        }),
+      });
+
+      if (res.ok || res.status === 404) {
+        setTestResults((prev) => ({ ...prev, [providerId]: 'success' }));
+      } else {
+        setTestResults((prev) => ({ ...prev, [providerId]: 'error' }));
+      }
+    } catch {
+      setTestResults((prev) => ({ ...prev, [providerId]: 'error' }));
+    }
+  };
+
+  const toggleShowKey = (providerId: string) => {
+    setShowKeys((prev) => ({ ...prev, [providerId]: !prev[providerId] }));
+  };
+
+  const maskKey = (key: string) => {
+    if (key.length <= 8) return '••••••••';
+    return key.substring(0, 4) + '••••••••' + key.substring(key.length - 4);
+  };
 
   const handleAddIdentifier = () => {
     if (newIdentifier.value.trim()) {
@@ -27,11 +108,171 @@ export default function SettingsPage() {
     }
   };
 
+  const activeCount = Object.keys(apiKeys).length;
+
   return (
     <DashboardLayout>
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">설정</h1>
+      </div>
+
+      {/* API Key Management */}
+      <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism mb-8">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <Key size={24} className="text-primary" />
+            <h2 className="text-2xl font-semibold">유료 API 프로바이더</h2>
+          </div>
+          <span className="text-sm text-gray-400">
+            {activeCount}개 활성화됨
+          </span>
+        </div>
+
+        <div className="mb-6 p-4 bg-primary/10 border border-primary/20 rounded-lg">
+          <p className="text-sm text-gray-300">
+            유료 API 키를 등록하면 더 정확하고 상세한 유출 정보를 확인할 수 있습니다.
+            API 키는 브라우저에만 저장되며, 서버에 절대 저장되지 않습니다.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {PROVIDERS.map((provider) => {
+            const hasKey = !!apiKeys[provider.id];
+            const isEditing = editingProvider === provider.id;
+            const testResult = testResults[provider.id];
+
+            return (
+              <div
+                key={provider.id}
+                className={`p-5 rounded-lg border transition-colors ${
+                  hasKey
+                    ? 'bg-dark-border/50 border-primary/30'
+                    : 'bg-dark-border/30 border-dark-border'
+                }`}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2">
+                      <h3 className="font-semibold text-white">{provider.name}</h3>
+                      {hasKey && (
+                        <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs rounded-full">
+                          활성
+                        </span>
+                      )}
+                      {testResult === 'success' && (
+                        <CheckCircle size={16} className="text-green-400" />
+                      )}
+                      {testResult === 'error' && (
+                        <XCircle size={16} className="text-danger" />
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-400 mt-1">{provider.description}</p>
+                    <div className="flex items-center space-x-4 mt-2">
+                      <span className="text-xs text-gray-500">{provider.pricingInfo}</span>
+                      <a
+                        href={provider.docsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-primary hover:underline flex items-center space-x-1"
+                      >
+                        <span>API 키 발급</span>
+                        <ExternalLink size={12} />
+                      </a>
+                    </div>
+                    {/* Features */}
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      {provider.features.map((feature) => (
+                        <span
+                          key={feature}
+                          className="px-2 py-0.5 bg-dark-border text-gray-400 text-xs rounded"
+                        >
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Key Input / Display */}
+                {isEditing ? (
+                  <div className="flex gap-2 mt-3">
+                    <input
+                      type="text"
+                      value={editValue}
+                      onChange={(e) => setEditValue(e.target.value)}
+                      placeholder={provider.apiKeyPlaceholder}
+                      className="flex-1 px-3 py-2 bg-dark-card border border-dark-border rounded-lg text-gray-300 text-sm font-mono"
+                      autoFocus
+                    />
+                    <button
+                      onClick={() => handleSaveKey(provider.id)}
+                      className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 transition-smooth"
+                    >
+                      저장
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEditingProvider(null);
+                        setEditValue('');
+                      }}
+                      className="px-4 py-2 bg-dark-border text-gray-300 rounded-lg text-sm hover:bg-dark-border/80 transition-smooth"
+                    >
+                      취소
+                    </button>
+                  </div>
+                ) : hasKey ? (
+                  <div className="flex items-center gap-2 mt-3">
+                    <div className="flex-1 px-3 py-2 bg-dark-card border border-dark-border rounded-lg text-sm font-mono text-gray-400">
+                      {showKeys[provider.id]
+                        ? apiKeys[provider.id]
+                        : maskKey(apiKeys[provider.id] || '')}
+                    </div>
+                    <button
+                      onClick={() => toggleShowKey(provider.id)}
+                      className="p-2 text-gray-400 hover:text-gray-300 transition-smooth"
+                      title={showKeys[provider.id] ? '숨기기' : '보기'}
+                    >
+                      {showKeys[provider.id] ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                    <button
+                      onClick={() => handleTestKey(provider.id)}
+                      disabled={testResult === 'testing'}
+                      className="px-3 py-2 bg-dark-border text-gray-300 rounded-lg text-sm hover:bg-dark-border/80 transition-smooth disabled:opacity-50"
+                    >
+                      {testResult === 'testing' ? '테스트 중...' : '테스트'}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEditingProvider(provider.id);
+                        setEditValue(apiKeys[provider.id] || '');
+                      }}
+                      className="px-3 py-2 bg-dark-border text-gray-300 rounded-lg text-sm hover:bg-dark-border/80 transition-smooth"
+                    >
+                      수정
+                    </button>
+                    <button
+                      onClick={() => handleRemoveKey(provider.id)}
+                      className="p-2 text-gray-400 hover:text-danger transition-smooth"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setEditingProvider(provider.id);
+                      setEditValue('');
+                    }}
+                    className="mt-3 px-4 py-2 border border-dashed border-dark-border text-gray-400 rounded-lg text-sm hover:border-primary hover:text-primary transition-smooth w-full"
+                  >
+                    + API 키 추가
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Managed Identifiers */}
