@@ -4,6 +4,9 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
+    verification: {
+          google: "sGajasnphIeU2q8cB84Tn009_tF4kwVqXCt02e0skBs",
+    },
   title: '유출닷컴 - 내 개인정보 유출 확인 & 자동 삭제 요청 | 100% 무료 오픈소스',
   description:
     '내 개인정보가 다크웹이나 데이터브로커에 유출되었는지 무료로 확인하세요. Google 로그인으로 간편 시작, 자동 PIPA 삭제 요청. 100% 무료 오픈소스 프로젝트.',
