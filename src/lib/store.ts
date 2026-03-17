@@ -21,7 +21,7 @@ interface AppStore {
   updateUser: (user: Partial<User>) => void;
 
   // Scan actions
-  setScanResults: (results: ScanResult) => void;
+  setScanResults: (results: ScanResult | null) => void;
   clearScanResults: () => void;
   setIsScanning: (isScanning: boolean) => void;
   setScanProgress: (progress: number) => void;
@@ -48,6 +48,21 @@ interface AppStore {
   // Reset
   reset: () => void;
 }
+
+const initialUser: User = {
+  id: 'user_' + Math.random().toString(36).substr(2, 9),
+  email: '',
+  name: '',
+  createdAt: new Date().toISOString(),
+  identifiers: [],
+  notificationPreferences: {
+    emailNotifications: true,
+    webNotifications: true,
+    newBreachAlert: true,
+    removalStatus: true,
+    weeklyReport: true,
+  },
+};
 
 export const useAppStore = create<AppStore>((set) => ({
   user: null,
