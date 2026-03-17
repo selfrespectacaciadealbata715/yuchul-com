@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useAppStore } from '@/lib/store';
 import { supabase, signInWithGoogle, canScan, recordScan } from '@/lib/supabase';
 import ScanForm from '@/components/ScanForm';
@@ -12,7 +11,6 @@ import type { ScanInput } from '@/lib/types';
 import type { User } from '@supabase/supabase-js';
 
 export default function ScanPage() {
-  const router = useRouter();
   const {
     isScanning,
     scanProgress,
