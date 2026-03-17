@@ -34,10 +34,6 @@ const RISK_LABEL_MAP: Record<string, '높음' | '중간' | '낮음'> = {
   'Low': '낮음',
 };
 
-interface XposedOrNotCheckResponse {
-  breaches: string[][];
-}
-
 interface BreachDetail {
   breach: string;
   details: string;
@@ -159,7 +155,6 @@ export async function checkPassword(password: string): Promise<number> {
     const suffix = sha1.substring(5).toUpperCase();
 
     const response = await fetch(`${HIBP_API_URL}/${prefix}`);
-
     if (!response.ok) {
       return 0;
     }
