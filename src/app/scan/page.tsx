@@ -81,13 +81,13 @@ export default function ScanPage() {
       clearInterval(progressInterval);
 
       if (!response.ok) {
-        throw new Error('ì¤ìº API í¸ì¶ ì¤í¨');
+        throw new Error('스캔 API 호출 실패');
       }
 
       const apiData = await response.json();
 
       if (!apiData.success) {
-        throw new Error(apiData.message || 'ì¤ìº ì¤ ì¤ë¥ê° ë°ìíìµëë¤.');
+        throw new Error(apiData.message || '스캔 중 오류가 발생했습니다.');
       }
 
       // Complete the progress animation
@@ -108,7 +108,7 @@ export default function ScanPage() {
       setFindings(apiData.findings || []);
     } catch (error) {
       clearInterval(progressInterval);
-      const errorMessage = error instanceof Error ? error.message : 'ì ì ìë ì¤ë¥ê° ë°ìíìµëë¤.';
+      const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
       setScanError(errorMessage);
       console.error('Scan error:', error);
     } finally {
@@ -120,7 +120,7 @@ export default function ScanPage() {
     addRemovalRequest({
       id: 'req_' + Math.random().toString(36).substr(2, 9),
       findingId,
-      status: 'ëê¸°ì¤',
+      status: '대기중',
       createdAt: new Date().toISOString(),
       progress: 0,
       requestType: 'automatic',
@@ -137,11 +137,11 @@ export default function ScanPage() {
             className="inline-flex items-center space-x-2 text-gray-400 hover:text-primary transition-smooth mb-6"
           >
             <ArrowLeft size={20} />
-            <span>ëìê°ê¸°</span>
+            <span>돌아가기</span>
           </Link>
-          <h1 className="text-4xl font-bold mb-2">ê°ì¸ì ë³´ ì ì¶ íì¸</h1>
+          <h1 className="text-4xl font-bold mb-2">개인정보 유출 확인</h1>
           <p className="text-gray-400">
-            ë¹ì ì ê°ì¸ì ë³´ê° ì ì¶ëìëì§ ì§ê¸ ë°ë¡ íì¸í´ë³´ì¸ì.
+            당신의 개인정보가 유출되었는지 지금 바로 확인해보세요.
           </p>
         </div>
 
@@ -149,9 +149,9 @@ export default function ScanPage() {
         {!user ? (
           <div className="bg-dark-card border border-dark-border rounded-2xl p-12 text-center mb-12">
             <Lock size={48} className="mx-auto text-primary mb-4" />
-            <h2 className="text-2xl font-semibold mb-3">Google ë¡ê·¸ì¸ íì</h2>
+            <h2 className="text-2xl font-semibold mb-3">Google 로그인 필요</h2>
             <p className="text-gray-400 mb-6">
-              ì¤í¨ ë°©ì§ë¥¼ ìí´ Google ë¡ê·¸ì¸ í ì¤ìºí  ì ììµëë¤.
+              스팸 방지를 위해 Google 로그인 후 스캔할 수 있습니다.
             </p>
             <button
               onClick={() => signInWithGoogle()}
@@ -163,10 +163,10 @@ export default function ScanPage() {
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
               </svg>
-              <span>Googleë¡ ë¡ê·¸ì¸</span>
+              <span>Google로 로그인</span>
             </button>
             <p className="text-xs text-gray-500 mt-4">
-              ì£¼ 2í ë¬´ë£ ì¤ìº â¢ ê°ì¸ì ë³´ë ì ì¥íì§ ììµëë¤
+              주 2회 무료 스캔 • 개인정보는 저장하지 않습니다
             </p>
           </div>
         ) : (
@@ -176,10 +176,10 @@ export default function ScanPage() {
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-5 mb-6 flex items-start space-x-3">
                 <AlertTriangle className="text-yellow-400 flex-shrink-0 mt-0.5" size={20} />
                 <div>
-                  <p className="text-yellow-300 font-medium">ì£¼ê° ì¤ìº íë ëë¬</p>
+                  <p className="text-yellow-300 font-medium">주간 스캔 한도 도달</p>
                   <p className="text-sm text-gray-400 mt-1">
-                    ì´ë² ì£¼ ì¤ìº 2íë¥¼ ëª¨ë ì¬ì©íìµëë¤.{' '}
-                    {scanLimit.nextReset.toLocaleDateString('ko-KR')}ì ì´ê¸°íë©ëë¤.
+                    이번 주 스캔 2회를 모두 사용했습니다.{' '}
+                    {scanLimit.nextReset.toLocaleDateString('ko-KR')}에 초기화됩니다.
                   </p>
                 </div>
               </div>
@@ -188,14 +188,14 @@ export default function ScanPage() {
             {/* Scan Remaining */}
             {scanLimit.allowed && !isScanning && !scanResults && (
               <div className="mb-6 text-sm text-gray-400">
-                ì´ë² ì£¼ ë¨ì ì¤ìº: <strong className="text-primary">{scanLimit.remaining}í</strong> / 2í
+                이번 주 남은 스캔: <strong className="text-primary">{scanLimit.remaining}회</strong> / 2회
               </div>
             )}
 
             {/* Scan Form */}
             {!isScanning && !scanResults && (
               <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism mb-12">
-                <h2 className="text-2xl font-semibold mb-6">ì ë³´ ìë ¥</h2>
+                <h2 className="text-2xl font-semibold mb-6">정보 입력</h2>
                 <ScanForm
                   onSubmit={handleScan}
                   isLoading={isScanning}
@@ -209,7 +209,7 @@ export default function ScanPage() {
         {isScanning && (
           <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism mb-12">
             <div className="text-center">
-              <h2 className="text-2xl font-semibold mb-6">ì¤ìº ì§í ì¤...</h2>
+              <h2 className="text-2xl font-semibold mb-6">스캔 진행 중...</h2>
               <div className="w-full bg-dark-border rounded-full h-2 overflow-hidden mb-4">
                 <div
                   className="bg-gradient-primary h-full transition-all duration-300"
@@ -217,7 +217,7 @@ export default function ScanPage() {
                 />
               </div>
               <p className="text-gray-400 text-sm">
-                {Math.floor(Math.min(scanProgress, 100))}% ìë£
+                {Math.floor(Math.min(scanProgress, 100))}% 완료
               </p>
             </div>
           </div>
@@ -231,7 +231,7 @@ export default function ScanPage() {
               onClick={() => setScanError(null)}
               className="text-sm text-red-400 hover:text-red-300 mt-2 underline"
             >
-              ë«ê¸°
+              닫기
             </button>
           </div>
         )}
@@ -242,12 +242,12 @@ export default function ScanPage() {
             <div className="mb-8">
               <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-2xl font-semibold">ì¤ìº ê²°ê³¼</h2>
+                  <h2 className="text-2xl font-semibold">스캔 결과</h2>
                   <div className="text-right">
                     <div className="text-3xl font-bold gradient-text">
                       {scanResults.riskScore}
                     </div>
-                    <div className="text-sm text-gray-400">ìí ì ì</div>
+                    <div className="text-sm text-gray-400">위험 점수</div>
                   </div>
                 </div>
 
@@ -261,12 +261,12 @@ export default function ScanPage() {
                       ? 'text-green-400 font-semibold'
                       : 'text-gray-300'
                   }`}>
-                    <strong>{scanResults.findings.length}</strong>ê±´ì ì ì¶ì´
-                    ë°ê²¬ëììµëë¤.
+                    <strong>{scanResults.findings.length}</strong>건의 유출이
+                    발견되었습니다.
                   </p>
                   {scanResults.findings.length === 0 && (
                     <p className="text-green-400 text-sm mt-2">
-                      ì¶íí©ëë¤! ì´ë¤ ì ì¶ë ë°ê²¬ëì§ ìììµëë¤.
+                      축하합니다! 어떤 유출도 발견되지 않았습니다.
                     </p>
                   )}
                 </div>
@@ -294,13 +294,13 @@ export default function ScanPage() {
                 }}
                 className="flex-1 px-6 py-3 bg-dark-card border border-dark-border rounded-lg text-white font-semibold hover:border-primary transition-smooth"
               >
-                ë¤ì ì¤ìº
+                다시 스캔
               </button>
               <Link
                 href="/dashboard"
                 className="flex-1 px-6 py-3 bg-gradient-primary text-white font-semibold rounded-lg hover:opacity-90 transition-smooth text-center"
               >
-                ëìë³´ëë¡ ì´ë
+                대시보드로 이동
               </Link>
             </div>
           </div>
@@ -310,7 +310,7 @@ export default function ScanPage() {
         {!scanResults && !isScanning && user && scanLimit.allowed && (
           <div className="text-center py-12">
             <p className="text-gray-400 text-lg">
-              ìì ììì ìì±íê³  ì¤ìºì ììíì¸ì.
+              위의 양식을 작성하고 스캔을 시작하세요.
             </p>
           </div>
         )}
