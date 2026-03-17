@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { checkBreaches } from '@/lib/hibp';
-import { Finding, RiskLevel, BreachSource } from '@/lib/types';
+import { Finding } from '@/lib/types';
 
 interface ScanRequestBody {
   email: string;
