@@ -14,11 +14,11 @@ export default function ReportPage() {
     let score = 0;
     findings.forEach((finding) => {
       score += 15;
-      if (finding.riskLevel === 'ëì') {
+      if (finding.riskLevel === '높음') {
         score += 20;
-      } else if (finding.riskLevel === 'ì¤ê°') {
+      } else if (finding.riskLevel === '중간') {
         score += 10;
-      } else if (finding.riskLevel === 'ë®ì') {
+      } else if (finding.riskLevel === '낮음') {
         score += 5;
       }
     });
@@ -40,7 +40,7 @@ export default function ReportPage() {
     return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
   }).length;
 
-  const completedRemovals = removalRequests.filter((r) => r.status === 'ìë£').length;
+  const completedRemovals = removalRequests.filter((r) => r.status === '완료').length;
 
   const reportData = {
     currentScore,
@@ -54,8 +54,8 @@ export default function ReportPage() {
 
   // Score history - show just current score since we don't have historical data
   const scoreHistory = [
-    { month: 'ì´ì ', score: reportData.previousScore },
-    { month: 'íì¬', score: currentScore },
+    { month: '이전', score: reportData.previousScore },
+    { month: '현재', score: currentScore },
   ];
 
   // Generate events from findings and removal requests
@@ -69,17 +69,17 @@ export default function ReportPage() {
     findings.forEach((f) => {
       eventList.push({
         date: f.dateFound,
-        event: `ìë¡ì´ ì ì¶ ë°ê²¬: ${f.source}`,
+        event: `새로운 유출 발견: ${f.source}`,
         type: 'finding',
       });
     });
 
     removalRequests.forEach((r) => {
-      if (r.status === 'ìë£' && r.completedAt) {
+      if (r.status === '완료' && r.completedAt) {
         const finding = findings.find((f) => f.id === r.findingId);
         eventList.push({
           date: r.completedAt,
-          event: `ì­ì  ìì²­ ìë£: ${finding?.source || 'ì ì ìì'}`,
+          event: `삭제 요청 완료: ${finding?.source || '알 수 없음'}`,
           type: 'removal',
         });
       }
@@ -111,7 +111,7 @@ export default function ReportPage() {
     if (events.length === 0) {
       return (
         <div className="flex items-center justify-center h-64 px-4 py-8 bg-dark-border/30 rounded-lg text-gray-400">
-          <p>ì¤ìºì ì¤ííë©´ ë³´ì ì ì ì¶ì´ê° íìë©ëë¤.</p>
+          <p>스캔을 실행하면 보안 점수 추이가 표시됩니다.</p>
         </div>
       );
     }
@@ -142,14 +142,14 @@ export default function ReportPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold mb-2">ìê° ë³´ì ë¦¬í¬í¸</h1>
+          <h1 className="text-3xl font-bold mb-2">월간 보안 리포트</h1>
           <p className="text-gray-400">
-            {new Date().toLocaleDateString('ko-KR')} ê¸°ì¤ ë³´ì íí©
+            {new Date().toLocaleDateString('ko-KR')} 기준 보안 현황
           </p>
         </div>
         <button className="flex items-center space-x-2 px-6 py-3 bg-dark-card border border-dark-border rounded-lg hover:border-primary transition-smooth">
           <Download size={20} />
-          <span>ë¤ì´ë¡ë</span>
+          <span>다운로드</span>
         </button>
       </div>
 
@@ -157,37 +157,37 @@ export default function ReportPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {/* Current Score */}
         <div className="bg-dark-card border border-dark-border rounded-xl p-6 glass-morphism">
-          <p className="text-gray-400 text-sm mb-2">íì¬ ì ì</p>
+          <p className="text-gray-400 text-sm mb-2">현재 점수</p>
           <div className="flex items-end space-x-2">
             <div className="text-4xl font-bold gradient-text">
               {reportData.currentScore}
             </div>
             <div className="flex items-center space-x-1 text-danger text-sm mb-2">
               <TrendingDown size={16} />
-              <span>{reportData.scoreChange} pts â</span>
+              <span>{reportData.scoreChange} pts ↑</span>
             </div>
           </div>
-          <p className="text-xs text-gray-500 mt-2">ì´ì  ì ëë¹</p>
+          <p className="text-xs text-gray-500 mt-2">이전 월 대비</p>
         </div>
 
         {/* Monthly Stats */}
         <div className="bg-dark-card border border-dark-border rounded-xl p-6 glass-morphism">
-          <p className="text-gray-400 text-sm mb-4">ì´ë² ë¬ íµê³</p>
+          <p className="text-gray-400 text-sm mb-4">이번 달 통계</p>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-gray-300">ì¤ìº</span>
-              <span className="font-semibold">{reportData.totalScans}í</span>
+              <span className="text-gray-300">스캔</span>
+              <span className="font-semibold">{reportData.totalScans}회</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-300">ë°ê²¬</span>
+              <span className="text-gray-300">발견</span>
               <span className="font-semibold text-danger">
-                {reportData.findingsThisMonth}ê±´
+                {reportData.findingsThisMonth}건
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-300">ì­ì  ìë£</span>
+              <span className="text-gray-300">삭제 완료</span>
               <span className="font-semibold text-success">
-                {reportData.completedRemovals}ê±´
+                {reportData.completedRemovals}건
               </span>
             </div>
           </div>
@@ -195,13 +195,13 @@ export default function ReportPage() {
 
         {/* Removal Progress */}
         <div className="bg-dark-card border border-dark-border rounded-xl p-6 glass-morphism">
-          <p className="text-gray-400 text-sm mb-4">ì­ì  ìì²­ ì§íë¥ </p>
+          <p className="text-gray-400 text-sm mb-4">삭제 요청 진행률</p>
           <div className="space-y-3">
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span>ìë£</span>
+                <span>완료</span>
                 <span className="text-success font-semibold">
-                  {reportData.completedRemovals}ê±´
+                  {reportData.completedRemovals}건
                 </span>
               </div>
               <div className="w-full h-2 bg-dark-border rounded-full overflow-hidden">
@@ -215,9 +215,9 @@ export default function ReportPage() {
             </div>
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span>ì§íì¤</span>
+                <span>진행중</span>
                 <span className="text-warning font-semibold">
-                  {reportData.removalRequestsThisMonth - reportData.completedRemovals}ê±´
+                  {reportData.removalRequestsThisMonth - reportData.completedRemovals}건
                 </span>
               </div>
               <div className="w-full h-2 bg-dark-border rounded-full overflow-hidden">
@@ -235,16 +235,16 @@ export default function ReportPage() {
 
       {/* Chart */}
       <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism mb-8">
-        <h2 className="text-xl font-semibold mb-6">ë³´ì ì ì ì¶ì´</h2>
+        <h2 className="text-xl font-semibold mb-6">보안 점수 추이</h2>
         {renderChart()}
         <p className="text-xs text-gray-500 mt-4">
-          â ë®ììë¡ ë ìì í©ëë¤. (0 = ë§¤ì° ìì , 100 = ë§¤ì° ìí)
+          ↓ 낮을수록 더 안전합니다. (0 = 매우 안전, 100 = 매우 위험)
         </p>
       </div>
 
       {/* Timeline */}
       <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism">
-        <h2 className="text-xl font-semibold mb-6">íë ê¸°ë¡</h2>
+        <h2 className="text-xl font-semibold mb-6">활동 기록</h2>
         {events.length > 0 ? (
           <div className="space-y-4">
             {events.map((event, index) => (
@@ -261,10 +261,10 @@ export default function ReportPage() {
                   </div>
                   <span className="text-xs px-2 py-1 rounded bg-black/30">
                     {event.type === 'finding'
-                      ? 'ì ì¶'
+                      ? '유출'
                       : event.type === 'removal'
-                        ? 'ì­ì '
-                        : 'ë¦¬í¬í¸'}
+                        ? '삭제'
+                        : '리포트'}
                   </span>
                 </div>
               </div>
@@ -272,8 +272,8 @@ export default function ReportPage() {
           </div>
         ) : (
           <div className="text-center py-8 text-gray-400">
-            <p>ìì§ íë ê¸°ë¡ì´ ììµëë¤.</p>
-            <p className="text-sm mt-2">ì¤ìºì ì¤ííë©´ íë ê¸°ë¡ì´ íìë©ëë¤.</p>
+            <p>아직 활동 기록이 없습니다.</p>
+            <p className="text-sm mt-2">스캔을 실행하면 활동 기록이 표시됩니다.</p>
           </div>
         )}
       </div>
@@ -281,33 +281,33 @@ export default function ReportPage() {
       {/* Recommendations */}
       <div className="mt-8 bg-dark-card border border-primary/20 rounded-2xl p-8">
         <h2 className="text-xl font-semibold mb-6 flex items-center space-x-2">
-          <span>â ê¶ì¥ì¬í­</span>
+          <span>✓ 권장사항</span>
         </h2>
         <ul className="space-y-3">
           <li className="flex items-start space-x-3">
             <span className="text-primary font-bold">1</span>
             <div>
-              <p className="font-semibold text-white">ì ê¸°ì ì¸ ì¤ìº</p>
+              <p className="font-semibold text-white">정기적인 스캔</p>
               <p className="text-sm text-gray-400 mt-1">
-                ë§¤ì 1í ì´ì ì¤ìºì ì¤ííì¬ ìë¡ì´ ì ì¶ì ê°ì§íì¸ì.
+                매월 1회 이상 스캔을 실행하여 새로운 유출을 감지하세요.
               </p>
             </div>
           </li>
           <li className="flex items-start space-x-3">
             <span className="text-primary font-bold">2</span>
             <div>
-              <p className="font-semibold text-white">ìë¦¼ ì¤ì </p>
+              <p className="font-semibold text-white">알림 설정</p>
               <p className="text-sm text-gray-400 mt-1">
-                ìë¡ì´ ì ì¶ì´ ë°ê²¬ëë©´ ì¦ì ìë¦¼ì ë°ëë¡ ì¤ì íì¸ì.
+                새로운 유출이 발견되면 즉시 알림을 받도록 설정하세요.
               </p>
             </div>
           </li>
           <li className="flex items-start space-x-3">
             <span className="text-primary font-bold">3</span>
             <div>
-              <p className="font-semibold text-white">ë¹ ë¥¸ ëì</p>
+              <p className="font-semibold text-white">빠른 대응</p>
               <p className="text-sm text-gray-400 mt-1">
-                ë°ê²¬ë ì ì¶ì ëí´ ì¦ì ì­ì  ìì²­ì ì§ííì¸ì.
+                발견된 유출에 대해 즉시 삭제 요청을 진행하세요.
               </p>
             </div>
           </li>
