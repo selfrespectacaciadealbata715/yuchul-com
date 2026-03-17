@@ -31,17 +31,17 @@ export default function SettingsPage() {
     <DashboardLayout>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">ì¤ì </h1>
+        <h1 className="text-3xl font-bold mb-2">설정</h1>
       </div>
 
       {/* Managed Identifiers */}
       <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism">
-        <h2 className="text-2xl font-semibold mb-6">ê´ë¦¬ ì¤ì¸ ì ë³´</h2>
+        <h2 className="text-2xl font-semibold mb-6">관리 중인 정보</h2>
 
         {/* Add New Identifier */}
         <div className="mb-8 p-6 bg-dark-border/50 rounded-lg">
           <p className="text-sm text-gray-400 mb-4">
-            ì¤ìºí  ì´ë©ì¼, ì íë²í¸, ì¬ì©ìëª ë±ì ì¶ê°íì¸ì.
+            스캔할 이메일, 전화번호, 사용자명 등을 추가하세요.
           </p>
           <div className="flex flex-col md:flex-row gap-4">
             <select
@@ -54,10 +54,10 @@ export default function SettingsPage() {
               }
               className="px-4 py-3 bg-dark-card border border-dark-border rounded-lg text-gray-300 md:w-32"
             >
-              <option value="email">ì´ë©ì¼</option>
-              <option value="phone">ì íë²í¸</option>
-              <option value="username">ì¬ì©ìëª</option>
-              <option value="name">ì´ë¦</option>
+              <option value="email">이메일</option>
+              <option value="phone">전화번호</option>
+              <option value="username">사용자명</option>
+              <option value="name">이름</option>
             </select>
             <input
               type="text"
@@ -65,7 +65,7 @@ export default function SettingsPage() {
               onChange={(e) =>
                 setNewIdentifier({ ...newIdentifier, value: e.target.value })
               }
-              placeholder="ê°ì ìë ¥íì¸ì..."
+              placeholder="값을 입력하세요..."
               className="flex-1 px-4 py-3 bg-dark-card border border-dark-border rounded-lg text-gray-300"
             />
             <button
@@ -73,7 +73,7 @@ export default function SettingsPage() {
               className="flex items-center space-x-2 px-6 py-3 bg-gradient-primary text-white rounded-lg hover:opacity-90 transition-smooth font-medium"
             >
               <Plus size={20} />
-              <span>ì¶ê°</span>
+              <span>추가</span>
             </button>
           </div>
         </div>
@@ -89,16 +89,16 @@ export default function SettingsPage() {
                 <div>
                   <p className="font-semibold text-white text-sm">
                     {identifier.type === 'email'
-                      ? 'ì´ë©ì¼'
+                      ? '이메일'
                       : identifier.type === 'phone'
-                        ? 'ì íë²í¸'
+                        ? '전화번호'
                         : identifier.type === 'username'
-                          ? 'ì¬ì©ìëª'
-                          : 'ì´ë¦'}
+                          ? '사용자명'
+                          : '이름'}
                   </p>
                   <p className="text-gray-400 text-sm">{identifier.value}</p>
                   <p className="text-xs text-gray-500 mt-1">
-                    ì¶ê°ë¨: {new Date(identifier.addedAt).toLocaleDateString('ko-KR')}
+                    추가됨: {new Date(identifier.addedAt).toLocaleDateString('ko-KR')}
                   </p>
                 </div>
                 <button
@@ -112,23 +112,23 @@ export default function SettingsPage() {
           </div>
         ) : (
           <div className="p-8 text-center bg-dark-border/30 rounded-lg">
-            <p className="text-gray-400">ì¶ê°ë ì ë³´ê° ììµëë¤.</p>
+            <p className="text-gray-400">추가된 정보가 없습니다.</p>
           </div>
         )}
       </div>
 
       {/* Account Settings */}
       <div className="mt-8 bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism">
-        <h2 className="text-2xl font-semibold mb-6">ê³ì  ì¤ì </h2>
+        <h2 className="text-2xl font-semibold mb-6">계정 설정</h2>
 
         <div className="space-y-4">
           <div className="p-4 bg-dark-border/50 rounded-lg">
-            <p className="text-gray-400 text-sm mb-2">ê³ì  ID</p>
+            <p className="text-gray-400 text-sm mb-2">계정 ID</p>
             <p className="font-mono text-gray-300">{user?.id}</p>
           </div>
 
           <div className="p-4 bg-dark-border/50 rounded-lg">
-            <p className="text-gray-400 text-sm mb-2">ê³ì  ìì±ì¼</p>
+            <p className="text-gray-400 text-sm mb-2">계정 생성일</p>
             <p className="text-gray-300">
               {user?.createdAt
                 ? new Date(user.createdAt).toLocaleDateString('ko-KR')
@@ -137,9 +137,9 @@ export default function SettingsPage() {
           </div>
 
           <div className="p-4 bg-danger/10 border border-danger/20 rounded-lg mt-6">
-            <p className="font-semibold text-white mb-2">ìí ìì­</p>
+            <p className="font-semibold text-white mb-2">위험 영역</p>
             <button className="px-4 py-2 bg-danger text-white rounded-lg hover:bg-danger/90 transition-smooth text-sm font-medium">
-              ê³ì  ì­ì 
+              계정 삭제
             </button>
           </div>
         </div>
