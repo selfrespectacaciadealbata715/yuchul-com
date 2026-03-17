@@ -78,20 +78,206 @@ export default function SignupPage() {
 
           <button
             onClick={handleVerify}
-            className="w-full px-6 py-3 bg-gradient-primary text-white font-semibold rounded-lg hover:opacity-90 transition-smooth mb-4"���:��;!�{ef:�,�؝]ۏ����\�Ә[YOH�^Yܘ^KML^\�H���;'m:�e;'o;'a:�&�)�:��ef;!j:�;&����	�B��]ۈ�\�Ә[YOH�^\�[X\�Hݙ\��[�\�[�H���:��;"�:�';!�B�؝]ۏ������[��Y�H��]]���[����\�Ә[YOH�^Yܘ^KMLݙ\��^Yܘ^KM^\�H�[��][ۋ\�[��]M����Ȃ���;'m:��:��;%y�c;'�;'/;"�:� ;&��:�g:��;'n;ef:�,��[�ς��]����]���
-NB���]\��
-�]��\�Ә[YOH�Z[�Z\�ܙY[���Y\��X���^][\�X�[�\��\�Y�KX�[�\�MKLL����]��\�Ә[YOH��Y�[X^]�[Y����ʈ���
-��B�]��\�Ә[YOH�^X�[�\�X�N���]��\�Ә[YOH��LL�LL���[�YY�[��YܘYY[�\�[X\�H�^][\�X�[�\��\�Y�KX�[�\�^X]]�X�M����[��\�Ә[YOH�^]�]H�۝X��^[ȏ�'(;,���[����]���H�\�Ә[YOH�^L��۝X��X�L���f�;&�:� ;'�O�O���\�Ә[YOH�^Yܘ^KM���:��;(%{'a:��:��:��:� ;"�:��:��;%�;(${!�{ef;!.;&�������]�����ʈ�Y۝\�ܛH
-��B��ܛH۔�X�Z]^�[�T�X�Z]H�\�Ә[YOH��X�K^KM�����ʈ�[YH�Y[
-��B�]���X�[�\�Ә[YOH�����^\�H�۝[YY][H^Yܘ^KL�X�L����;'m:���X�[��]��\�Ә[YOH��[]]�H���\�\���\�Ә[YOH�X���]HY�M�LK̈�[�ٛܛH]�[��]K^KLK̈^Yܘ^KML���^�O^̌B�ς�[�]�\OH�^���[YOH��[YH���[YO^ٛܛQ]K��[Y_B�ې�[��O^�[�P�[��_B�X�Z�\�H�fcz�.:��H���\�Ә[YOH��Y�[LL��MKL���Y\��X�\��ܙ\��ܙ\�Y\��X�ܙ\���[�Y[�^Yܘ^KL�X�Z�\�Yܘ^KM����\Θ�ܙ\�\�[X\�H���\Μ�[��L����\Μ�[��\�[X\�Ǩ�[��][ۋ\�[����ς��]����]�����ʈ[XZ[�Y[
-��B�]���X�[�\�Ә[YOH�����^\�H�۝[YY][H^Yܘ^KL�X�L����;'m:�e;'o��X�[��]��\�Ә[YOH��[]]�H���XZ[��\�Ә[YOH�X���]HY�M�LK̈�[�ٛܛH]�[��]K^KLK̈^Yܘ^KML���^�O^̌B�ς�[�]�\OH�[XZ[���[YOH�[XZ[���[YO^ٛܛQ]K�[XZ[B�ې�[��O^�[�P�[��_B�X�Z�\�H�^[\P�XZ[���H���\�Ә[YOH��Y�[LL��MKL���Y\��X�\��ܙ\��ܙ\�Y\��X�ܙ\���[�Y[�^Yܘ^KL�X�Z�\�Yܘ^KM����\Θ�ܙ\�\�[X\�H���\Μ�[��L����\Μ�[��\�[X\�Ǩ�[��][ۋ\�[����ς��]����]�����ʈ\���ܙ�Y[
-��B�]���X�[�\�Ә[YOH�����^\�H�۝[YY][H^Yܘ^KL�X�L����:�a:� :�;f.��X�[��]��\�Ә[YOH��[]]�H������\�Ә[YOH�X���]HY�M�LK̈�[�ٛܛH]�[��]K^KLK̈^Yܘ^KML���^�O^̌B�ς�[�]�\OH�\���ܙ���[YOH�\���ܙ���[YO^ٛܛQ]K�\���ܙB�ې�[��O^�[�P�[��_B�X�Z�\�H��(��(��(��(��(��(��(��(����\�Ә[YOH��Y�[LL��MKL���Y\��X�\��ܙ\��ܙ\�Y\��X�ܙ\���[�Y[�^Yܘ^KL�X�Z�\�Yܘ^KM����\Θ�ܙ\�\�[X\�H���\Μ�[��L����\Μ�[��\�[X\�Ǩ�[��][ۋ\�[����ς��]����]�����ʈ�ۙ�\�H\���ܙ�Y[
-��B�]���X�[�\�Ә[YOH�����^\�H�۝[YY][H^Yܘ^KL�X�L����:�a:� :�;f.;fe{'n��X�[��]��\�Ә[YOH��[]]�H������\�Ә[YOH�X���]HY�M�LK̈�[�ٛܛH]�[��]K^KLK̈^Yܘ^KML���^�O^̌B�ς�[�]�\OH�\���ܙ���[YOH��ۙ�\�T\���ܙ���[YO^ٛܛQ]K��ۙ�\�T\���ܙB�ې�[��O^�[�P�[��_B�X�Z�\�H��(��(��(��(��(��(��(��(����\�Ә[YOH��Y�[LL��MKL���Y\��X�\��ܙ\��ܙ\�Y\��X�ܙ\���[�Y[�^Yܘ^KL�X�Z�\�Yܘ^KM����\Θ�ܙ\�\�[X\�H���\Μ�[��L����\Μ�[��\�[X\�Ǩ�[��][ۋ\�[����ς��]����]�����ʈ\��܈Y\��Y�H
-��B��\��܈	��
-�]��\�Ә[YOH�M��Y[��\��L�ܙ\��ܙ\�Y[��\�̌��[�Y[ȏ���\�Ә[YOH�^Y[��\�^\�H���\��ܟO����]���
-_B���ʈ\�\��X�؛�
-��B�]��\�Ә[YOH��^][\�\�\��X�K^L����[�]�\OH��X�؛����[YOH�YܙYY�\�\Ȃ��X��Y^ٛܛQ]K�YܙYY�\�\�B�ې�[��O^�[�P�[��_B��\�Ә[YOH��MHMH��[�Y��Y\��X�\��ܙ\�Y\��X�ܙ\�]LH��ς�X�[�\�Ә[YOH�^\�H^Yܘ^KM���H�Y�H��\�\Ȉ�\�Ә[YOH�^\�[X\�Hݙ\��[�\�[�H���;'m;&�{%oz� ��O��:����	�B�H�Y�H���]�X�H��\�Ә[YOH�^\�[X\�Hݙ\��[�\�[�H���:�';'n;(%z��;,�:�:�*{.j��O��;%�:��{'f;ejz��:����X�[���]�����ʈ�X�Z]�]ۈ
-��B��]ۂ�\OH��X�Z]��\�X�Y^�\��Y[��B��\�Ә[YOH��Y�[M�KL���YܘYY[�\�[X\�H^]�]H�۝\�[ZX����[�Y[�ݙ\���X�]KNL\�X�Y��X�]KML�[��][ۋ\�[���^][\�X�[�\��\�Y�KX�[�\��X�K^L������[���\��Y[���	�� ;'�H;)$K�����	�f�;&�:� ;'�I�O��[���\���ԚY��^�O^̌Hς�؝]ۏ��ٛܛO����ʈ�]]�[ۜ�
-��B�]��\�Ә[YOH�]N���]��\�Ә[YOH��[]]�HX�M����]��\�Ә[YOH�X���]H[��]L�^][\�X�[�\����]��\�Ә[YOH��Y�[�ܙ\�]�ܙ\�Y\��X�ܙ\��ς��]���]��\�Ә[YOH��[]]�H�^�\�Y�KX�[�\�^\�H����[��\�Ә[YOH�L���Y\��X��^Yܘ^KML���$:���[����]����]����]��\�Ә[YOH��X�K^KLȏ���]ۂ�\OH��]ۈ���\�Ә[YOH��Y�[MKL���Y\��X�\��ܙ\��ܙ\�Y\��X�ܙ\���[�Y[�^Yܘ^KL��۝[YY][Hݙ\���ܙ\�\�[X\�H�[��][ۋ\�[����������z�g:� ;'�B�؝]ۏ����]ۂ�\OH��]ۈ���\�Ә[YOH��Y�[MKL���Y\��X�\��ܙ\��ܙ\�Y\��X�ܙ\���[�Y[�^Yܘ^KL��۝[YY][Hݙ\���ܙ\�\�[X\�H�[��][ۋ\�[�������Z�[��g:� ;'�B�؝]ۏ���]����]�����ʈ��[�[��
-��B�]��\�Ә[YOH�]N^X�[�\�����\�Ә[YOH�^Yܘ^KM���;'m:��:��;(%{'m;'�;'/;"�:� ;&����	�B�[���Y�H��]]���[���\�Ә[YOH�^\�[X\�Hݙ\��[�\�[�H���:�g:��;'n��[�ς�����]����]����]���
-NB
+            className="w-full px-6 py-3 bg-gradient-primary text-white font-semibold rounded-lg hover:opacity-90 transition-smooth mb-4"
+          >
+            계속하기
+          </button>
+
+          <p className="text-gray-500 text-sm">
+            이메일을 받지 못하셨나요?{' '}
+            <button className="text-primary hover:underline">
+              다시 발송
+            </button>
+          </p>
+
+          <Link
+            href="/auth/login"
+            className="text-gray-500 hover:text-gray-400 text-sm transition-smooth mt-6 block"
+          >
+            이미 계정이 있으신가요? 로그인하기
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-dark-bg flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center mx-auto mb-4">
+            <span className="text-white font-bold text-lg">유철</span>
+          </div>
+          <h1 className="text-2xl font-bold mb-2">회원가입</h1>
+          <p className="text-gray-400">
+            계정을 만들고 대시보드에 접속하세요.
+          </p>
+        </div>
+
+        {/* Signup Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Name Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              이름
+            </label>
+            <div className="relative">
+              <User
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+                size={20}
+              />
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="홍길동"
+                className="w-full pl-12 pr-4 py-3 bg-dark-card border border-dark-border rounded-lg text-gray-300 placeholder-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-smooth"
+              />
+            </div>
+          </div>
+
+          {/* Email Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              이메일
+            </label>
+            <div className="relative">
+              <Mail
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+                size={20}
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="example@gmail.com"
+                className="w-full pl-12 pr-4 py-3 bg-dark-card border border-dark-border rounded-lg text-gray-300 placeholder-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-smooth"
+              />
+            </div>
+          </div>
+
+          {/* Password Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              비밀번호
+            </label>
+            <div className="relative">
+              <Lock
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+                size={20}
+              />
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                className="w-full pl-12 pr-4 py-3 bg-dark-card border border-dark-border rounded-lg text-gray-300 placeholder-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-smooth"
+              />
+            </div>
+          </div>
+
+          {/* Confirm Password Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              비밀번호 확인
+            </label>
+            <div className="relative">
+              <Lock
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+                size={20}
+              />
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="••••••••"
+                className="w-full pl-12 pr-4 py-3 bg-dark-card border border-dark-border rounded-lg text-gray-300 placeholder-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-smooth"
+              />
+            </div>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="p-4 bg-danger/10 border border-danger/20 rounded-lg">
+              <p className="text-danger text-sm">{error}</p>
+            </div>
+          )}
+
+          {/* Terms Checkbox */}
+          <div className="flex items-start space-x-2">
+            <input
+              type="checkbox"
+              name="agreedToTerms"
+              checked={formData.agreedToTerms}
+              onChange={handleChange}
+              className="w-5 h-5 rounded bg-dark-card border-dark-border mt-1"
+            />
+            <label className="text-sm text-gray-400">
+              <a href="#terms" className="text-primary hover:underline">
+                이용약관
+              </a>
+              과{' '}
+              <a href="#privacy" className="text-primary hover:underline">
+                개인정보처리방침
+              </a>
+              에 동의합니다
+            </label>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full px-6 py-3 bg-gradient-primary text-white font-semibold rounded-lg hover:opacity-90 disabled:opacity-50 transition-smooth flex items-center justify-center space-x-2"
+          >
+            <span>{isLoading ? '가입 중...' : '회원가입'}</span>
+            <ArrowRight size={20} />
+          </button>
+        </form>
+
+        {/* OAuth Options */}
+        <div className="mt-8">
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-dark-border" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-dark-bg text-gray-500">또는</span>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <button
+              type="button"
+              className="w-full px-4 py-3 bg-dark-card border border-dark-border rounded-lg text-gray-300 font-medium hover:border-primary transition-smooth"
+            >
+              Google로 가입
+            </button>
+
+            <button
+              type="button"
+              className="w-full px-4 py-3 bg-dark-card border border-dark-border rounded-lg text-gray-300 font-medium hover:border-primary transition-smooth"
+            >
+              Kakao로 가입
+            </button>
+          </div>
+        </div>
+
+        {/* Login Link */}
+        <div className="mt-8 text-center">
+          <p className="text-gray-400">
+            이미 계정이 있으신가요?{' '}
+            <Link href="/auth/login" className="text-primary hover:underline">
+              로그인
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
