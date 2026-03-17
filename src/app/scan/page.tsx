@@ -1,19 +1,18 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAppStore } from '@/lib/store';
 import { supabase, signInWithGoogle, canScan, recordScan } from '@/lib/supabase';
 import ScanForm from '@/components/ScanForm';
 import FindingCard from '@/components/FindingCard';
-import LoadingWithAd from '@/components/LoadingWithAd';
 import { ArrowLeft, Lock, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
-import type { ScanInput, Finding } from '@/lib/types';
+import type { ScanInput } from '@/lib/types';
 import type { User } from '@supabase/supabase-js';
 
 export default function ScanPage() {
+  const router = useRouter();
   const {
     isScanning,
     scanProgress,
@@ -27,6 +26,7 @@ export default function ScanPage() {
 
   const [user, setUser] = useState<User | null>(null);
   const [scanLimit, setScanLimit] = useState({ allowed: true, remaining: 2, nextReset: new Date() });
+  const [scanError, setScanError] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -55,68 +55,72 @@ export default function ScanPage() {
 
     setIsScanning(true);
     setScanProgress(0);
+    setScanError(null);
 
-    // Intentionally longer loading (8 seconds total) for ad display
-    const totalSteps = 80;
-    for (let i = 0; i <= totalSteps; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      setScanProgress(Math.floor((i / totalSteps) * 100));
+    // Animate progress for 3-4 seconds while API call happens
+    let currentProgress = 0;
+    const progressInterval = setInterval(() => {
+      if (currentProgress >= 95) {
+        clearInterval(progressInterval);
+        return;
+      }
+      currentProgress = Math.min(95, currentProgress + Math.random() * 20);
+      setScanProgress(currentProgress);
+    }, 300);
+
+    try {
+      // Call the real API
+      const response = await fetch('/api/scan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: data.email }),
+      });
+
+      clearInterval(progressInterval);
+
+      if (!response.ok) {
+        throw new Error('ì¤ìº API í¸ì¶ ì¤í¨');
+      }
+
+      const apiData = await response.json();
+
+      if (!apiData.success) {
+        throw new Error(apiData.message || 'ì¤ìº ì¤ ì¤ë¥ê° ë°ìíìµëë¤.');
+      }
+
+      // Complete the progress animation
+      setScanProgress(100);
+
+      // Record scan usage
+      recordScan();
+      setScanLimit(canScan());
+
+      // Set results with real API data
+      setScanResults({
+        input: data,
+        findings: apiData.findings || [],
+        timestamp: new Date().toISOString(),
+        riskScore: apiData.riskScore || 0,
+      });
+
+      setFindings(apiData.findings || []);
+    } catch (error) {
+      clearInterval(progressInterval);
+      const errorMessage = error instanceof Error ? error.message : 'ì ì ìë ì¤ë¥ê° ë°ìíìµëë¤.';
+      setScanError(errorMessage);
+      console.error('Scan error:', error);
+    } finally {
+      setIsScanning(false);
     }
-
-    // Record scan usage
-    recordScan();
-    setScanLimit(canScan());
-
-    // Mock results
-    const mockFindings: Finding[] = [
-      {
-        id: '1',
-        source: 'Collection #1',
-        type: '\uB2E4\uD06C\uC6F9',
-        dateFound: '2024-01-15',
-        riskLevel: '\uB192\uC74C',
-        exposedData: ['\uC774\uBA54\uC77C', '\uBE44\uBC00\uBC88\uD638'],
-        description: '\uC54C\uB824\uC9C4 \uB300\uADDC\uBAA8 \uB370\uC774\uD130 \uC720\uCD9C\uC5D0\uC11C \uBC1C\uACAC\uB418\uC5C8\uC2B5\uB2C8\uB2E4.',
-        status: 'new' as const,
-      },
-      {
-        id: '2',
-        source: '123RF \uC720\uCD9C',
-        type: '\uB2E4\uD06C\uC6F9',
-        dateFound: '2024-02-10',
-        riskLevel: '\uC911\uAC04',
-        exposedData: ['\uC774\uBA54\uC77C', '\uC774\uB984', '\uC804\uD654\uBC88\uD638'],
-        description: '123RF \uC6F9\uC0AC\uC774\uD2B8\uC5D0\uC11C \uC720\uCD9C\uB41C \uC815\uBCF4',
-        status: 'new' as const,
-      },
-      {
-        id: '3',
-        source: '\uB124\uC774\uBC84 \uAC80\uC0C9\uACB0\uACFC',
-        type: '\uC11C\uD53C\uC2A4\uC6F9',
-        dateFound: '2024-03-01',
-        riskLevel: '\uC911\uAC04',
-        exposedData: ['\uC774\uB984', '\uC774\uBA54\uC77C'],
-        description: '\uB124\uC774\uBC84 \uAC80\uC0C9 \uACB0\uACFC\uC5D0 \uAC1C\uC778\uC815\uBCF4\uAC00 \uB178\uCD9C\uB418\uC5B4 \uC788\uC2B5\uB2C8\uB2E4.',
-        status: 'new' as const,
-      },
-    ];
-
-    setScanResults({
-      input: data,
-      findings: mockFindings,
-      timestamp: new Date().toISOString(),
-      riskScore: 72,
-    });
-
-    setFindings(mockFindings);
-    setIsScanning(false);
   };
 
   const handleRemove = (findingId: string) => {
     addRemovalRequest({
       id: 'req_' + Math.random().toString(36).substr(2, 9),
       findingId,
-      status: '\uB300\uAE30\uC911',
+      status: 'ëê¸°ì¤',
       createdAt: new Date().toISOString(),
       progress: 0,
       requestType: 'automatic',
@@ -133,11 +137,11 @@ export default function ScanPage() {
             className="inline-flex items-center space-x-2 text-gray-400 hover:text-primary transition-smooth mb-6"
           >
             <ArrowLeft size={20} />
-            <span>{'\uB3CC\uC544\uAC00\uAE30'}</span>
+            <span>ëìê°ê¸°</span>
           </Link>
-          <h1 className="text-4xl font-bold mb-2">{'\uAC1C\uC778\uC815\uBCF4 \uC720\uCD9C \uD655\uC778'}</h1>
+          <h1 className="text-4xl font-bold mb-2">ê°ì¸ì ë³´ ì ì¶ íì¸</h1>
           <p className="text-gray-400">
-            {'\uBE44\uC2E0\uC758 \uAC1C\uC778\uC815\uBCF4\uAC00 \uC720\uCD9C\uB418\uC5C8\uB294\uC9C0 \uC9C0\uAE08 \uBC14\uB85C \uD655\uC778\uD574\uBCF4\uC138\uC694.'}
+            ë¹ì ì ê°ì¸ì ë³´ê° ì ì¶ëìëì§ ì§ê¸ ë°ë¡ íì¸í´ë³´ì¸ì.
           </p>
         </div>
 
@@ -145,9 +149,9 @@ export default function ScanPage() {
         {!user ? (
           <div className="bg-dark-card border border-dark-border rounded-2xl p-12 text-center mb-12">
             <Lock size={48} className="mx-auto text-primary mb-4" />
-            <h2 className="text-2xl font-semibold mb-3">{'Google \uB85C\uADF8\uC778 \uD544\uC694'}</h2>
+            <h2 className="text-2xl font-semibold mb-3">Google ë¡ê·¸ì¸ íì</h2>
             <p className="text-gray-400 mb-6">
-              {'\uC2A4\uD338 \uBC29\uC9C0\uB97C \uC704\uD574 Google \uB85C\uADF8\uC778 \uD6C4 \uC2A4\uCE94\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.'}
+              ì¤í¨ ë°©ì§ë¥¼ ìí´ Google ë¡ê·¸ì¸ í ì¤ìºí  ì ììµëë¤.
             </p>
             <button
               onClick={() => signInWithGoogle()}
@@ -159,10 +163,10 @@ export default function ScanPage() {
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
               </svg>
-              <span>{'Google\uB85C \uB85C\uADF8\uC778'}</span>
+              <span>Googleë¡ ë¡ê·¸ì¸</span>
             </button>
             <p className="text-xs text-gray-500 mt-4">
-              {'\uC8FC 2\uD68C \uBB34\uB8CC \uC2A4\uCE94 \u2022 \uAC1C\uC778\uC815\uBCF4\uB294 \uC800\uC7A5\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4'}
+              ì£¼ 2í ë¬´ë£ ì¤ìº â¢ ê°ì¸ì ë³´ë ì ì¥íì§ ììµëë¤
             </p>
           </div>
         ) : (
@@ -172,10 +176,10 @@ export default function ScanPage() {
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-5 mb-6 flex items-start space-x-3">
                 <AlertTriangle className="text-yellow-400 flex-shrink-0 mt-0.5" size={20} />
                 <div>
-                  <p className="text-yellow-300 font-medium">{'\uC8FC\uAC04 \uC2A4\uCE94 \uD55C\uB3C4 \uB3C4\uB2EC'}</p>
+                  <p className="text-yellow-300 font-medium">ì£¼ê° ì¤ìº íë ëë¬</p>
                   <p className="text-sm text-gray-400 mt-1">
-                    {'\uC774\uBC88 \uC8FC \uC2A4\uCE94 2\uD68C\uB97C \uBAA8\uB450 \uC0AC\uC6A9\uD558\uC600\uC2B5\uB2C8\uB2E4. '}
-                    {scanLimit.nextReset.toLocaleDateString('ko-KR')}{'\uC5D0 \uCD08\uAE30\uD654\uB429\uB2C8\uB2E4.'}
+                    ì´ë² ì£¼ ì¤ìº 2íë¥¼ ëª¨ë ì¬ì©íìµëë¤.{' '}
+                    {scanLimit.nextReset.toLocaleDateString('ko-KR')}ì ì´ê¸°íë©ëë¤.
                   </p>
                 </div>
               </div>
@@ -184,14 +188,14 @@ export default function ScanPage() {
             {/* Scan Remaining */}
             {scanLimit.allowed && !isScanning && !scanResults && (
               <div className="mb-6 text-sm text-gray-400">
-                {'\uC774\uBC88 \uC8FC \uB0A8\uC740 \uC2A4\uCE94: '}<strong className="text-primary">{scanLimit.remaining}{'\uD68C'}</strong> / 2{'\uD68C'}
+                ì´ë² ì£¼ ë¨ì ì¤ìº: <strong className="text-primary">{scanLimit.remaining}í</strong> / 2í
               </div>
             )}
 
             {/* Scan Form */}
             {!isScanning && !scanResults && (
               <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism mb-12">
-                <h2 className="text-2xl font-semibold mb-6">{'\uC815\uBCF4 \uC785\uB825'}</h2>
+                <h2 className="text-2xl font-semibold mb-6">ì ë³´ ìë ¥</h2>
                 <ScanForm
                   onSubmit={handleScan}
                   isLoading={isScanning}
@@ -201,9 +205,35 @@ export default function ScanPage() {
           </>
         )}
 
-        {/* Scanning Progress with Ads */}
+        {/* Scanning Progress */}
         {isScanning && (
-          <LoadingWithAd progress={scanProgress} type="scan" />
+          <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism mb-12">
+            <div className="text-center">
+              <h2 className="text-2xl font-semibold mb-6">ì¤ìº ì§í ì¤...</h2>
+              <div className="w-full bg-dark-border rounded-full h-2 overflow-hidden mb-4">
+                <div
+                  className="bg-gradient-primary h-full transition-all duration-300"
+                  style={{ width: `${Math.min(scanProgress, 100)}%` }}
+                />
+              </div>
+              <p className="text-gray-400 text-sm">
+                {Math.floor(Math.min(scanProgress, 100))}% ìë£
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Error Message */}
+        {scanError && !isScanning && (
+          <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-5 mb-6">
+            <p className="text-red-400 font-medium">{scanError}</p>
+            <button
+              onClick={() => setScanError(null)}
+              className="text-sm text-red-400 hover:text-red-300 mt-2 underline"
+            >
+              ë«ê¸°
+            </button>
+          </div>
         )}
 
         {/* Results */}
@@ -212,19 +242,33 @@ export default function ScanPage() {
             <div className="mb-8">
               <div className="bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-2xl font-semibold">{'\uC2A4\uCE94 \uACB0\uACFC'}</h2>
+                  <h2 className="text-2xl font-semibold">ì¤ìº ê²°ê³¼</h2>
                   <div className="text-right">
                     <div className="text-3xl font-bold gradient-text">
                       {scanResults.riskScore}
                     </div>
-                    <div className="text-sm text-gray-400">{'\uC704\uD5D8 \uC810\uC218'}</div>
+                    <div className="text-sm text-gray-400">ìí ì ì</div>
                   </div>
                 </div>
 
-                <div className="bg-dark-border/50 rounded-lg p-4 mb-6">
-                  <p className="text-gray-300">
-                    <strong>{scanResults.findings.length}</strong>{'\uAC74\uC758 \uC720\uCD9C\uC774 \uBC1C\uACAC\uB418\uC5C8\uC2B5\uB2C8\uB2E4.'}
+                <div className={`rounded-lg p-4 mb-6 ${
+                  scanResults.findings.length === 0
+                    ? 'bg-green-500/10 border border-green-500/20'
+                    : 'bg-dark-border/50'
+                }`}>
+                  <p className={`${
+                    scanResults.findings.length === 0
+                      ? 'text-green-400 font-semibold'
+                      : 'text-gray-300'
+                  }`}>
+                    <strong>{scanResults.findings.length}</strong>ê±´ì ì ì¶ì´
+                    ë°ê²¬ëììµëë¤.
                   </p>
+                  {scanResults.findings.length === 0 && (
+                    <p className="text-green-400 text-sm mt-2">
+                      ì¶íí©ëë¤! ì´ë¤ ì ì¶ë ë°ê²¬ëì§ ìììµëë¤.
+                    </p>
+                  )}
                 </div>
 
                 {scanResults.findings.length > 0 && (
@@ -245,17 +289,18 @@ export default function ScanPage() {
             <div className="flex flex-col md:flex-row gap-4">
               <button
                 onClick={() => {
-                  setScanResults(null as unknown as Parameters<typeof setScanResults>[0]);
+                  setScanResults(null);
+                  setScanError(null);
                 }}
                 className="flex-1 px-6 py-3 bg-dark-card border border-dark-border rounded-lg text-white font-semibold hover:border-primary transition-smooth"
               >
-                {'\uB2E4\uC2DC \uC2A4\uCE94'}
+                ë¤ì ì¤ìº
               </button>
               <Link
                 href="/dashboard"
                 className="flex-1 px-6 py-3 bg-gradient-primary text-white font-semibold rounded-lg hover:opacity-90 transition-smooth text-center"
               >
-                {'\uB300\uC2DC\uBCF4\uB4DC\uB85C \uC774\uB3D9'}
+                ëìë³´ëë¡ ì´ë
               </Link>
             </div>
           </div>
@@ -265,7 +310,7 @@ export default function ScanPage() {
         {!scanResults && !isScanning && user && scanLimit.allowed && (
           <div className="text-center py-12">
             <p className="text-gray-400 text-lg">
-              {'\uC704\uC5D0 \uC591\uC2DD\uC744 \uC791\uC131\uD558\uACE0 \uC2A4\uCE94\uC744 \uC2DC\uC791\uD558\uC138\uC694.'}
+              ìì ììì ìì±íê³  ì¤ìºì ììíì¸ì.
             </p>
           </div>
         )}
