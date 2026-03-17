@@ -25,11 +25,11 @@ export default function DashboardPage() {
       // Base points for each finding
       score += 15;
       // Additional points based on risk level
-      if (finding.riskLevel === 'ëì') {
+      if (finding.riskLevel === '높음') {
         score += 20;
-      } else if (finding.riskLevel === 'ì¤ê°') {
+      } else if (finding.riskLevel === '중간') {
         score += 10;
-      } else if (finding.riskLevel === 'ë®ì') {
+      } else if (finding.riskLevel === '낮음') {
         score += 5;
       }
     });
@@ -45,7 +45,7 @@ export default function DashboardPage() {
       totalBreaches: findings.length,
       removalableBreach: findings.filter((f) => f.status === 'new').length,
       removalQueueCount: removalRequests.filter(
-        (r) => r.status !== 'ìë£'
+        (r) => r.status !== '완료'
       ).length,
     });
   }, [findings, removalRequests]);
@@ -57,9 +57,9 @@ export default function DashboardPage() {
     <DashboardLayout>
       {/* Welcome Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">ëìë³´ë</h1>
+        <h1 className="text-3xl font-bold mb-2">대시보드</h1>
         <p className="text-gray-400">
-          ë¹ì ì ê°ì¸ì ë³´ ë³´ì ìíë¥¼ íëì íì¸íì¸ì.
+          당신의 개인정보 보안 상태를 한눈에 확인하세요.
         </p>
       </div>
 
@@ -76,7 +76,7 @@ export default function DashboardPage() {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <p className="text-gray-400 text-sm font-medium mb-1">
-                  íì¸ë ì ì¶
+                  확인된 유출
                 </p>
                 <h3 className="text-3xl font-bold">
                   {dashboardData.totalBreaches}
@@ -86,8 +86,8 @@ export default function DashboardPage() {
             </div>
             <p className="text-xs text-gray-500">
               {dashboardData.totalBreaches > 0
-                ? 'ì¦ì ì¡°ì¹ê° íìí©ëë¤'
-                : 'ìì í ìíìëë¤'}
+                ? '즉시 조치가 필요합니다'
+                : '안전한 상태입니다'}
             </p>
           </div>
 
@@ -96,7 +96,7 @@ export default function DashboardPage() {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <p className="text-gray-400 text-sm font-medium mb-1">
-                  ì­ì  ê°ë¥
+                  삭제 가능
                 </p>
                 <h3 className="text-3xl font-bold">
                   {dashboardData.removalableBreach}
@@ -108,7 +108,7 @@ export default function DashboardPage() {
               href="/dashboard/removal"
               className="text-xs text-primary hover:underline"
             >
-              ì­ì  ìì²­íê¸° â
+              삭제 요청하기 →
             </Link>
           </div>
 
@@ -117,7 +117,7 @@ export default function DashboardPage() {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <p className="text-gray-400 text-sm font-medium mb-1">
-                  ì²ë¦¬ ì¤ì¸ ìì²­
+                  처리 중인 요청
                 </p>
                 <h3 className="text-3xl font-bold">
                   {dashboardData.removalQueueCount}
@@ -127,8 +127,8 @@ export default function DashboardPage() {
             </div>
             <p className="text-xs text-gray-500">
               {dashboardData.removalQueueCount > 0
-                ? 'ì²ë¦¬ì¤ìëë¤'
-                : 'ìë£ë ìíìëë¤'}
+                ? '처리중입니다'
+                : '완료된 상태입니다'}
             </p>
           </div>
 
@@ -137,7 +137,7 @@ export default function DashboardPage() {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <p className="text-gray-400 text-sm font-medium mb-1">
-                  ë§ì§ë§ ì¤ìº
+                  마지막 스캔
                 </p>
                 <h3 className="text-sm text-white">
                   {new Date().toLocaleDateString('ko-KR')}
@@ -149,7 +149,7 @@ export default function DashboardPage() {
               href="/scan"
               className="text-xs text-primary hover:underline"
             >
-              ë¤ì ì¤ìºíê¸° â
+              다시 스캔하기 →
             </Link>
           </div>
         </div>
@@ -160,13 +160,13 @@ export default function DashboardPage() {
         {/* Findings List */}
         <div>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold">ìµê·¼ ë°ê²¬</h2>
+            <h2 className="text-xl font-semibold">최근 발견</h2>
             {getRecentFindings().length > 0 && (
               <Link
                 href="/dashboard/findings"
                 className="text-sm text-primary hover:underline"
               >
-                ì ì²´ë³´ê¸° â
+                전체보기 →
               </Link>
             )}
           </div>
@@ -189,9 +189,9 @@ export default function DashboardPage() {
                     </div>
                     <span
                       className={`px-2 py-1 rounded text-xs font-medium ${
-                        finding.riskLevel === 'ëì'
+                        finding.riskLevel === '높음'
                           ? 'bg-danger/20 text-danger'
-                          : finding.riskLevel === 'ì¤ê°'
+                          : finding.riskLevel === '중간'
                             ? 'bg-warning/20 text-warning'
                             : 'bg-success/20 text-success'
                       }`}
@@ -204,12 +204,12 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="bg-dark-card border border-dark-border rounded-lg p-8 text-center">
-              <p className="text-gray-400">ìì§ ë°ê²¬ë ì ì¶ì´ ììµëë¤.</p>
+              <p className="text-gray-400">아직 발견된 유출이 없습니다.</p>
               <Link
                 href="/scan"
                 className="text-sm text-primary hover:underline mt-4 inline-block"
               >
-                ì§ê¸ ì¤ìºíê¸°
+                지금 스캔하기
               </Link>
             </div>
           )}
@@ -218,13 +218,13 @@ export default function DashboardPage() {
         {/* Removal Requests */}
         <div>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold">ì­ì  ìì²­</h2>
+            <h2 className="text-xl font-semibold">삭제 요청</h2>
             {getRecentRequests().length > 0 && (
               <Link
                 href="/dashboard/removal"
                 className="text-sm text-primary hover:underline"
               >
-                ì ì²´ë³´ê¸° â
+                전체보기 →
               </Link>
             )}
           </div>
@@ -238,13 +238,13 @@ export default function DashboardPage() {
                 >
                   <div className="flex items-start justify-between mb-2">
                     <p className="font-semibold text-white">
-                      ìì²­ #{request.id.slice(-4)}
+                      요청 #{request.id.slice(-4)}
                     </p>
                     <span
                       className={`px-2 py-1 rounded text-xs font-medium ${
-                        request.status === 'ìë£'
+                        request.status === '완료'
                           ? 'bg-success/20 text-success'
-                          : request.status === 'ì§íì¤'
+                          : request.status === '진행중'
                             ? 'bg-warning/20 text-warning'
                             : 'bg-primary/20 text-primary'
                       }`}
@@ -266,12 +266,12 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="bg-dark-card border border-dark-border rounded-lg p-8 text-center">
-              <p className="text-gray-400">ìì§ ì­ì  ìì²­ì´ ììµëë¤.</p>
+              <p className="text-gray-400">아직 삭제 요청이 없습니다.</p>
               <Link
                 href="/scan"
                 className="text-sm text-primary hover:underline mt-4 inline-block"
               >
-                ì§ê¸ ì¤ìºíê¸°
+                지금 스캔하기
               </Link>
             </div>
           )}
@@ -280,25 +280,25 @@ export default function DashboardPage() {
 
       {/* Quick Actions */}
       <div className="mt-8 bg-dark-card border border-dark-border rounded-2xl p-8 glass-morphism">
-        <h2 className="text-xl font-semibold mb-6">ë¹ ë¥¸ ìì</h2>
+        <h2 className="text-xl font-semibold mb-6">빠른 작업</h2>
         <div className="flex flex-col md:flex-row gap-4">
           <Link
             href="/scan"
             className="flex-1 px-6 py-3 bg-gradient-primary text-white font-semibold rounded-lg hover:opacity-90 transition-smooth text-center"
           >
-            ìë¡ì´ ì¤ìº ìì
+            새로운 스캔 시작
           </Link>
           <Link
             href="/dashboard/findings"
             className="flex-1 px-6 py-3 bg-dark-border text-white font-semibold rounded-lg hover:border-primary transition-smooth text-center border border-dark-border"
           >
-            ì ì¶ íí© ë³´ê¸°
+            유출 현황 보기
           </Link>
           <Link
             href="/dashboard/settings"
             className="flex-1 px-6 py-3 bg-dark-border text-white font-semibold rounded-lg hover:border-primary transition-smooth text-center border border-dark-border"
           >
-            ì¤ì 
+            설정
           </Link>
         </div>
       </div>
