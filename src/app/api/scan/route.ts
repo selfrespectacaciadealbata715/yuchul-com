@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, phone, name, username } = body;
+    const { email, phone: _phone, name: _name, username: _username } = body;
 
     // Mock scan results - in production, integrate real HIBP API
     const findings = [];
