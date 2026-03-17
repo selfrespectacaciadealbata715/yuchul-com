@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: 'ì´ë©ì¼ì´ íìí©ëë¤.',
+          error: '이메일이 필요합니다.',
         },
         { status: 400 }
       );
@@ -34,9 +34,9 @@ export async function POST(request: NextRequest) {
         ...breachData.map((breach, index): Finding => ({
           id: `breach-${index}`,
           source: breach.name,
-          type: 'ë¤í¬ì¹',
+          type: '다크웹',
           dateFound: breach.breachDate,
-          riskLevel: breach.riskLevel || 'ì¤ê°',
+          riskLevel: breach.riskLevel || '중간',
           exposedData: breach.dataClasses,
           description: breach.description,
           url: breach.domain ? `https://${breach.domain}` : undefined,
@@ -53,16 +53,16 @@ export async function POST(request: NextRequest) {
 
       // Add points for high-risk breaches
       const highRiskCount = findings.filter(
-        (f) => f.riskLevel === 'ëì'
+        (f) => f.riskLevel === '높음'
       ).length;
       riskScore = Math.min(100, riskScore + highRiskCount * 20);
 
       // Add points for sensitive data exposure
       const sensitiveDataCount = findings.filter(
         (f) =>
-          f.exposedData.includes('ë¹ë°ë²í¸') ||
-          f.exposedData.includes('ì ì©ì¹´ëì ë³´') ||
-          f.exposedData.includes('ê²°ì ì¹´ëì ë³´')
+          f.exposedData.includes('비밀번호') ||
+          f.exposedData.includes('신용카드정보') ||
+          f.exposedData.includes('결제카드정보')
       ).length;
       riskScore = Math.min(100, riskScore + sensitiveDataCount * 15);
     }
@@ -74,8 +74,8 @@ export async function POST(request: NextRequest) {
         riskScore,
         message:
           findings.length > 0
-            ? `${findings.length}ê±´ì ì ì¶ì´ ë°ê²¬ëììµëë¤.`
-            : 'ë°ê²¬ë ì ì¶ì´ ììµëë¤.',
+            ? `${findings.length}건의 유출이 발견되었습니다.`
+            : '발견된 유출이 없습니다.',
       },
       { status: 200 }
     );
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: 'ì¤ìº ì¤ ì¤ë¥ê° ë°ìíìµëë¤.',
+        error: '스캔 중 오류가 발생했습니다.',
       },
       { status: 500 }
     );
