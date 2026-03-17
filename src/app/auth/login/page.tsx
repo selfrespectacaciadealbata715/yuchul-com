@@ -16,7 +16,7 @@ export default function LoginPage() {
     try {
       await signInWithGoogle();
     } catch (err) {
-      setError('ë¡ê·¸ì¸ ì¤ ì¤ë¥ê° ë°ìíìµëë¤.');
+      setError('로그인 중 오류가 발생했습니다.');
       setIsLoading(false);
     }
   };
@@ -27,11 +27,11 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-sm">ì ì¶</span>
+            <span className="text-white font-bold text-sm">유출</span>
           </div>
-          <h1 className="text-2xl font-bold mb-2">ë¡ê·¸ì¸</h1>
+          <h1 className="text-2xl font-bold mb-2">로그인</h1>
           <p className="text-gray-400">
-            ëìë³´ëì ì ìíì¬ ë¹ì ì ê°ì¸ì ë³´ë¥¼ ê´ë¦¬íì¸ì.
+            대시보드에 접속하여 당신의 개인정보를 관리하세요.
           </p>
         </div>
 
@@ -48,16 +48,16 @@ export default function LoginPage() {
           disabled={isLoading}
           className="w-full px-6 py-3 bg-gradient-primary text-white font-semibold rounded-lg hover:opacity-90 disabled:opacity-50 transition-smooth flex items-center justify-center space-x-2 mb-6"
         >
-          <span>{isLoading ? 'ë¡ê·¸ì¸ ì¤...' : 'Googleë¡ ë¡ê·¸ì¸'}</span>
+          <span>{isLoading ? '로그인 중...' : 'Google로 로그인'}</span>
           {!isLoading && <ArrowRight size={20} />}
         </button>
 
         {/* Signup Link */}
         <div className="text-center mb-6">
           <p className="text-gray-400">
-            ìì§ ê³ì ì´ ìì¼ì ê°ì?{' '}
+            아직 계정이 없으신가요?{' '}
             <Link href="/auth/signup" className="text-primary hover:underline">
-              ê°ìíê¸°
+              가입하기
             </Link>
           </p>
         </div>
@@ -68,7 +68,7 @@ export default function LoginPage() {
             href="/"
             className="text-gray-500 hover:text-gray-400 text-sm transition-smooth"
           >
-            íì¼ë¡ ëìê°ê¸°
+            홈으로 돌아가기
           </Link>
         </div>
       </div>
