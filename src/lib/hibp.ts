@@ -1,9 +1,70 @@
-// Have I Been Pwned API wrapper using k-anonymity (free endpoint)
-// This endpoint doesn't require API key and is free to use
+// XposedOrNot API wrapper with k-anonymity for password checking
+// XposedOrNot API is free with no API key needed
+// HIBP k-anonymity API for password checking
 
+const XPOSED_OR_NOT_BASE_URL = 'https://api.xposedornot.com/v1';
 const HIBP_API_URL = 'https://api.pwnedpasswords.com/range';
 
-interface BreachData {
+// Korean translations for exposed data types
+const DATA_TYPE_TRANSLATIONS: Record<string, string> = {
+  'Emails': 'ì´ë©ì¼',
+  'Passwords': 'ë¹ë°ë²í¸',
+  'Names': 'ì´ë¦',
+  'Usernames': 'ì¬ì©ìëª',
+  'Phone Numbers': 'ì íë²í¸',
+  'Physical Addresses': 'ì£¼ì',
+  'Dates of Birth': 'ìëìì¼',
+  'Payment Card Data': 'ê²°ì ì¹´ëì ë³´',
+  'IP Addresses': 'IPì£¼ì',
+  'Credit Card Data': 'ì ì©ì¹´ëì ë³´',
+  'Social Media Profiles': 'ììë¯¸ëì´ê³ì ',
+  'Job Titles': 'ì§ê¸',
+  'Postal Codes': 'ì°í¸ë²í¸',
+  'Gender': 'ì±ë³',
+  'Government IDs': 'ì ë¶ID',
+  'Security Questions': 'ë³´ìì§ë¬¸',
+  'Historical Passwords': 'ê³¼ê±°ë¹ë°ë²í¸',
+};
+
+// Risk level mapping
+const RISK_LABEL_MAP: Record<string, 'ëì' | 'ì¤ê°' | 'ë®ì'> = {
+  'Critical': 'ëì',
+  'High': 'ëì',
+  'Medium': 'ì¤ê°',
+  'Low': 'ë®ì',
+};
+
+interface XposedOrNotCheckResponse {
+  breaches: string[][];
+}
+
+interface BreachDetail {
+  breach: string;
+  details: string;
+  domain: string;
+  industry: string;
+  logo: string;
+  password_risk: string;
+  searchable: string;
+  xposed_data: string;
+  xposed_date: string;
+  xposed_records: number;
+}
+
+interface BreachesSummary {
+  site: string;
+  risk_label: string;
+}
+
+interface XposedOrNotAnalyticsResponse {
+  ExposedBreaches: {
+    breaches_details: BreachDetail[];
+  };
+  BreachesSummary: BreachesSummary;
+  PastesSummary: Record<string, unknown>;
+}
+
+export interface BreachData {
   name: string;
   title: string;
   domain: string;
@@ -19,65 +80,71 @@ interface BreachData {
   isRetired: boolean;
   isSpamList: boolean;
   logoPath: string;
+  riskLevel?: 'ëì' | 'ì¤ê°' | 'ë®ì';
 }
 
-// Mock breach data for demonstration
-const MOCK_BREACHES = {
-  'example@gmail.com': [
-    {
-      name: 'Collection #1',
-      domain: 'unknown',
-      date: '2019-01-01',
-      exposedData: ['이메일', '비밀번호'],
-      breachCount: 773154,
-    },
-    {
-      name: '123RF Data Breach',
-      domain: 'shutterstock.com',
-      date: '2020-06-15',
-      exposedData: ['이메일', '이름', '전화번호'],
-      breachCount: 8945234,
-    },
-  ],
-  'user@example.com': [
-    {
-      name: 'LinkedIn Scrape',
-      domain: 'linkedin.com',
-      date: '2021-04-22',
-      exposedData: ['이메일', '이름', '직급'],
-      breachCount: 700000000,
-    },
-  ],
-};
+function translateExposedData(xposedDataString: string): string[] {
+  return xposedDataString.split(';').map((item) => {
+    const trimmed = item.trim();
+    return DATA_TYPE_TRANSLATIONS[trimmed] || trimmed;
+  });
+}
 
-export async function checkBreaches(
-  identifier: string
-): Promise<BreachData[] | null> {
+export async function checkBreaches(email: string): Promise<BreachData[] | null> {
   try {
-    // Mock API call - in production, integrate real HIBP API
-    const mockData = MOCK_BREACHES[identifier as keyof typeof MOCK_BREACHES];
+    // Call breach-analytics endpoint for detailed information
+    const response = await fetch(
+      `${XPOSED_OR_NOT_BASE_URL}/breach-analytics/${encodeURIComponent(email)}`
+    );
 
-    if (mockData) {
-      return mockData.map((breach) => ({
-        name: breach.name,
-        title: breach.name,
-        domain: breach.domain,
-        breachDate: breach.date,
-        addedDate: breach.date,
-        modifiedDate: breach.date,
-        pwnCount: breach.breachCount,
-        description: `${breach.exposedData.join(', ')}가 노출되었습니다.`,
-        dataClasses: breach.exposedData,
-        isVerified: true,
-        isFabricated: false,
-        isSensitive: false,
-        isRetired: false,
-        isSpamList: false,
-        logoPath: '/breach-logos/default.png',
-      })) as BreachData[];
+    // Return null if no breaches found (404)
+    if (response.status === 404) {
+      return null;
     }
 
-    return null;
+    if (!response.ok) {
+      console.error(`Error from XposedOrNot API: ${response.status}`);
+      return null;
+    }
+
+    const data: XposedOrNotAnalyticsResponse = await response.json();
+
+    // Check if there are any breaches
+    if (
+      !data.ExposedBreaches ||
+      !data.ExposedBreaches.breaches_details ||
+      data.ExposedBreaches.breaches_details.length === 0
+    ) {
+      return null;
+    }
+
+    // Get risk level from summary
+    const riskLabel = data.BreachesSummary?.risk_label || 'Low';
+    const riskLevel = RISK_LABEL_MAP[riskLabel] || 'ë®ì';
+
+    // Map API response to BreachData format
+    const breaches: BreachData[] = data.ExposedBreaches.breaches_details.map(
+      (detail: BreachDetail) => ({
+        name: detail.breach,
+        title: detail.breach,
+        domain: detail.domain,
+        breachDate: detail.xposed_date,
+        addedDate: detail.xposed_date,
+        modifiedDate: detail.xposed_date,
+        pwnCount: detail.xposed_records,
+        description: detail.details,
+        dataClasses: translateExposedData(detail.xposed_data),
+        isVerified: true,
+        isFabricated: false,
+        isSensitive: detail.password_risk === 'plaintext',
+        isRetired: false,
+        isSpamList: false,
+        logoPath: detail.logo || '/breach-logos/default.png',
+        riskLevel,
+      })
+    );
+
+    return breaches;
   } catch (error) {
     console.error('Error checking breaches:', error);
     return null;
