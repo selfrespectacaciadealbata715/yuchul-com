@@ -1,49 +1,81 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { checkBreaches } from '@/lib/hibp';
+import { Finding, RiskLevel } from '@/lib/types';
+
+interface ScanRequestBody {
+  email: string;
+  phone?: string;
+  name?: string;
+  username?: string;
+}
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { email, phone: _phone, name: _name, username: _username } = body;
+    const body: ScanRequestBody = await request.json();
+    const { email } = body;
 
-    // Mock scan results - in production, integrate real HIBP API
-    const findings = [];
-
-    // Simulate breach detection
-    if (email === 'example@gmail.com' || Math.random() > 0.7) {
-      findings.push({
-        id: '1',
-        source: 'Collection #1',
-        type: '다크웹' as const,
-        dateFound: '2024-01-15',
-        riskLevel: '높음' as const,
-        exposedData: ['이메일', '비밀번호'],
-        description: '알려진 대규모 데이터 유출에서 발견되었습니다.',
-        status: 'new' as const,
-      });
+    if (!email) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'ì´ë©ì¼ì´ íìí©ëë¤.',
+        },
+        { status: 400 }
+      );
     }
 
-    if (
-      email?.includes('123rf') ||
-      Math.random() > 0.8
-    ) {
-      findings.push({
-        id: '2',
-        source: '123RF 유출',
-        type: '다크웹' as const,
-        dateFound: '2024-02-10',
-        riskLevel: '중간' as const,
-        exposedData: ['이메일', '이름', '전화번호'],
-        description: '123RF 웹사이트에서 유출된 정보',
-        status: 'new' as const,
-      });
+    // Call the real XposedOrNot API
+    const breachData = await checkBreaches(email);
+    const findings: Finding[] = [];
+
+    if (breachData && breachData.length > 0) {
+      // Map breach data to Finding format
+      findings.push(
+        ...breachData.map((breach, index) => ({
+          id: `breach-${index}`,
+          source: breach.name,
+          type: 'ë¤í¬ì¹' as const, // Default to darkweb, could be enhanced with API data
+          dateFound: breach.breachDate,
+          riskLevel: breach.riskLevel || ('ì¤ê°' as RiskLevel),
+          exposedData: breach.dataClasses,
+          description: breach.description,
+          url: breach.domain ? `https://${breach.domain}` : undefined,
+          status: 'new' as const,
+        }))
+      );
+    }
+
+    // Calculate risk score (0-100)
+    let riskScore = 0;
+    if (findings.length > 0) {
+      // Base score based on number of breaches
+      riskScore = Math.min(100, findings.length * 15);
+
+      // Add points for high-risk breaches
+      const highRiskCount = findings.filter(
+        (f) => f.riskLevel === 'ëì'
+      ).length;
+      riskScore = Math.min(100, riskScore + highRiskCount * 20);
+
+      // Add points for sensitive data exposure
+      const sensitiveDataCount = findings.filter(
+        (f) =>
+          f.exposedData.includes('ë¹ë°ë²í¸') ||
+          f.exposedData.includes('ì ì©ì¹´ëì ë³´') ||
+          f.exposedData.includes('ê²°ì ì¹´ëì ë³´')
+      ).length;
+      riskScore = Math.min(100, riskScore + sensitiveDataCount * 15);
     }
 
     return NextResponse.json(
       {
         success: true,
         findings,
-        riskScore: findings.length * 35,
-        message: `${findings.length}건의 유출이 발견되었습니다.`,
+        riskScore,
+        message:
+          findings.length > 0
+            ? `${findings.length}ê±´ì ì ì¶ì´ ë°ê²¬ëììµëë¤.`
+            : 'ë°ê²¬ë ì ì¶ì´ ììµëë¤.',
       },
       { status: 200 }
     );
@@ -52,7 +84,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: '스캔 중 오류가 발생했습니다.',
+        error: 'ì¤ìº ì¤ ì¤ë¥ê° ë°ìíìµëë¤.',
       },
       { status: 500 }
     );
