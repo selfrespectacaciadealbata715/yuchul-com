@@ -1,118 +1,143 @@
 'use client';
 
+import { CheckCircle, Zap, Shield, Bell, BarChart3, Lock } from 'lucide-react';
 import Link from 'next/link';
-import {
-  Search,
-  Bell,
-  Trash2,
-  BarChart3,
-  Lock,
-  Zap,
-  CheckCircle,
-  Code,
-} from 'lucide-react';
-
-const features = [
-  {
-    icon: Search,
-    title: '개인정보 유출 스캔',
-    description: '다크웹, 서피스웹 등에서 유출된 개인정보를 탐색합니다.',
-  },
-  {
-    icon: Trash2,
-    title: '삭제 요청',
-    description: '유출된 개인정보의 삭제를 요청할 수 있습니다.',
-  },
-  {
-    icon: Bell,
-    title: '실시간 알림',
-    description: '새로운 유출이 발견되면 즉시 알려드립니다.',
-  },
-  {
-    icon: BarChart3,
-    title: '보안 리포트',
-    description: '주간/월간 보안 리포트를 제공합니다.',
-  },
-  {
-    icon: Lock,
-    title: '개인정보 보호',
-    description: '사용자의 개인정보를 안전하게 보호합니다.',
-  },
-  {
-    icon: Code,
-    title: '오픈소스',
-    description: '모든 코드가 공개되어 있어 투명합니다.',
-  },
-];
-
-const comparison = [
-  { feature: '가격', yuchul: true, competitors: ['₩9,900/월', '₩14,900/월', '₩19,900/월'] },
-  { feature: '유출 스캔', yuchul: true, competitors: [true, true, true] },
-  { feature: '삭제 요청', yuchul: true, competitors: [false, true, true] },
-  { feature: '실시간 알림', yuchul: true, competitors: [false, false, true] },
-  { feature: '보안 리포트', yuchul: true, competitors: [false, true, true] },
-  { feature: '오픈소스', yuchul: true, competitors: [false, false, false] },
-  { feature: '한국어 지원', yuchul: true, competitors: [false, false, true] },
-];
-
-const faq = [
-  {
-    question: '정말 완전히 무료인가요?',
-    answer:
-      '네, 유철은 100% 무료입니다. 오픈소스 프로젝트로, 서버 운영비는 광고 수익으로 충당합니다.',
-  },
-  {
-    question: '어떻게 수익을 내나요?',
-    answer:
-      '유철은 파트너 광고(쿠팡 파트너스, gamsgo 등)를 통해 운영비를 충당합니다. 사용자의 개인정보를 판매하지 않습니다.',
-  },
-  {
-    question: '스캔 횟수에 제한이 있나요?',
-    answer:
-      '스팸 방지를 위해 주 2회로 제한되어 있습니다. 매주 월요일에 초기화됩니다.',
-  },
-  {
-    question: '오픈소스라면 코드를 볼 수 있나요?',
-    answer:
-      '네, GitHub에서 모든 코드를 확인할 수 있습니다. 기여도 환영합니다!',
-  },
-  {
-    question: '내 개인정보는 안전한가요?',
-    answer:
-      '유철은 사용자의 개인정보를 저장하지 않습니다. 스캔은 k-익명성(k-anonymity) API를 사용하여 안전하게 수행됩니다.',
-  },
-];
 
 export default function PricingPage() {
+  const features = [
+    {
+      icon: Shield,
+      title: 'ë¡íµªì¹ ì ì¶ íì¸',
+      description: 'ìë ¤ì§ ëê·ëª¨ ë°ì´í° ì ì¶ìì ë¹ì ì ì ë³´ê° ìëì§ íì¸í©ëë¤.',
+    },
+    {
+      icon: BarChart3,
+      title: 'ê²ììì§ ë¸ì¶ ì¤ìº',
+      description: 'ê²ììì§ê³¼ ë°ì´í°ë¸ë¡ì»¤ ì¬ì´í¸ìì ë¹ì ì ì ë³´ë¥¼ ì°¾ìµëë¤.',
+    },
+    {
+      icon: Zap,
+      title: 'ìë PIPA ì­ì  ìì²­',
+      description:
+        'ê°ì¸ì ë³´ë³´í¸ë² ê¸°ë°ì ìëíë ì­ì  ìì²­ì ìì±íê³  ê´ë¦¬í©ëë¤.',
+    },
+    {
+      icon: Bell,
+      title: 'ì¤ìê° ìë¦¼',
+      description: 'ìë¡ì´ ì ì¶ì´ ë°ê²¬ëë©´ ì¦ì ì´ë©ì¼ê³¼ ì¹ ìë¦¼ì ë°ìµëë¤.',
+    },
+    {
+      icon: Lock,
+      title: 'ìì  ë¬´ë£',
+      description: 'ì¨ê²¨ì§ ë¹ì©ì´ ììµëë¤. ëª¨ë  ê¸°ë¥ì´ 100% ë¬´ë£ìëë¤.',
+    },
+    {
+      icon: BarChart3,
+      title: 'ìê° ë³´ì ë¦¬í¬í¸',
+      description: 'ìì¸í ë³´ì ë¦¬í¬í¸ì ê¶ì¥ì¬í­ì ë§¤ë¬ ë°ìµëë¤.',
+    },
+  ];
+
+  const comparison = [
+    {
+      feature: 'ë¤í¬ì¹ ì ì¶ íì¸',
+      yuchul: true,
+      competitors: ['ì ë£', 'ì ë£', 'ì ë£'],
+    },
+    {
+      feature: 'ë°ì´í°ë¸ë¡ì»¤ ì¤ìº',
+      yuchul: true,
+      competitors: ['ì íë¨', 'ì ë£', 'ì ë£'],
+    },
+    {
+      feature: 'ìë ì­ì  ìì²­',
+      yuchul: true,
+      competitors: [false, 'ì ë£', 'ì íë¨'],
+    },
+    {
+      feature: 'ì¤ìê° ìë¦¼',
+      yuchul: true,
+      competitors: ['ì íë¨', 'ì íë¨', 'ì ë£'],
+    },
+    {
+      feature: 'ìê° ë¦¬í¬í¸',
+      yuchul: true,
+      competitors: ['ê¸°ë³¸ë§', 'ê¸°ë³¸ë§', 'ì ë£'],
+    },
+    {
+      feature: 'íêµ­ì´ ì§ì',
+      yuchul: true,
+      competitors: [false, false, true],
+    },
+    {
+      feature: 'PIPA ì¤ì',
+      yuchul: true,
+      competitors: ['ìëì¤', 'ìëì¤', 'ë¶ë¶'],
+    },
+  ];
+
+  const faq = [
+    {
+      question: 'ì ë§ ìì í ë¬´ë£ì¸ê°ì?',
+      answer:
+        'ë¤, ì ì¶ë·ì»´ì 100% ë¬´ë£ìëë¤. ì¨ê²¨ì§ ë¹ì©ì´ë íë¦¬ë¯¸ì ë²ì ì´ ììµëë¤.',
+    },
+    {
+      question: 'ê°ì¸ì ë³´ë ìì íê°ì?',
+      answer:
+        'ë¤, ì°ë¦¬ë ê°ì¸ì ë³´ë³´í¸ë²ì ìì í ì¤ìí©ëë¤. ë¹ì ì ì ë³´ë ìí¸íëì´ ë³´í¸ëë©°, ì 3ìì ê³µì íì§ ììµëë¤.',
+    },
+    {
+      question: 'ì¼ë§ë ìì£¼ ì¤ìºí  ì ìëì?',
+      answer:
+        'ì¤ìºì ì í ìì´ ì¸ì ë ì§ ì¤íí  ì ììµëë¤. ìíë ë§í¼ ìì£¼ ì¤ìºíì¸ì.',
+    },
+    {
+      question: 'íìê°ìì´ íìíê°ì?',
+      answer:
+        'ìëì¤, íìê°ì ìì´ ë°ë¡ ì¤ìºì ììí  ì ììµëë¤. ëìë³´ëë¥¼ ì¬ì©íë ¤ë©´ ì´ë©ì¼ë¡ ê°ìíì¸ì.',
+    },
+    {
+      question: 'ì ì¶ì´ ë°ê²¬ëë©´ ì´ë»ê² ëëì?',
+      answer:
+        'ì°ë¦¬ê° PIPA ê¸°ë°ì ìëíë ì­ì  ìì²­ì ìì±í©ëë¤. ë¹ì ì ì´ë¥¼ í´ë¹ íì¬ì ë°ì¡íë© ë©ëë¤.',
+    },
+    {
+      question: 'ì¼ë§ë ë¹ ë¥´ê² ì­ì ëëì?',
+      answer:
+        'ì­ì  ê¸°ê°ì ê°ì¸ì ë³´ë¥¼ ë³´ì í íì¬ì ë°ë¼ ë¤ë¦ëë¤. ì¼ë°ì ì¼ë¡ 30ì¼ ì´ë´ì ì²ë¦¬ë©ëë¤.',
+    },
+  ];
+
   return (
     <div className="w-full min-h-screen bg-dark-bg py-20 px-4">
       {/* Hero Section */}
       <section className="max-w-4xl mx-auto text-center mb-20">
         <div className="inline-block mb-4 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full">
           <span className="text-sm text-primary font-medium">
-            투명한 가격 정책
+            í¬ëªí ê°ê²© ì ì±
           </span>
         </div>
 
         <h1 className="text-5xl font-bold mb-6 gradient-text">
-          완전히 무료입니다
+          ìì í ë¬´ë£ìëë¤
         </h1>
 
         <p className="text-xl text-gray-400 mb-8">
-          당신의 개인정보를 보호하는 것은 당신의 권리입니다.
-          유철은 모든 기능을 완전히 무료로 제공합니다.
+          ë¹ì ì ê°ì¸ì ë³´ë¥¼ ë³´í¸íë ê²ì ë¹ì ì ê¶ë¦¬ìëë¤.
+          ì ì¶ë·ì»´ì ëª¨ë  ê¸°ë¥ì ìì í ë¬´ë£ë¡ ì ê³µí©ëë¤.
         </p>
 
-        <div className="text-6xl font-bold mb-4">₩0</div>
+        <div className="text-6xl font-bold mb-4">â©0</div>
         <p className="text-gray-400 mb-8">
-          숨겨진 비용이나 프리미엄 버전이 없습니다.
+          ì¨ê²¨ì§ ë¹ì©ì´ë íë¦¬ë¯¸ì ë²ì ì´ ììµëë¤.
         </p>
 
         <Link
           href="/scan"
           className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-primary text-white font-semibold rounded-lg hover:opacity-90 transition-smooth text-lg"
         >
-          <span>지금 시작하기</span>
+          <span>ì§ê¸ ììíê¸°</span>
           <Zap size={24} />
         </Link>
       </section>
@@ -120,7 +145,7 @@ export default function PricingPage() {
       {/* Features Grid */}
       <section className="max-w-6xl mx-auto mb-20">
         <h2 className="text-3xl font-bold mb-12 text-center">
-          모든 기능이 무료로 제공됩니다
+          ëª¨ë  ê¸°ë¥ì´ ë¬´ë£ë¡ ì ê³µë©ëë¤
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -145,25 +170,25 @@ export default function PricingPage() {
       {/* Comparison Table */}
       <section className="max-w-6xl mx-auto mb-20">
         <h2 className="text-3xl font-bold mb-12 text-center">
-          유철 vs 다른 서비스
+          ì ì¶ë·ì»´ vs ë¤ë¥¸ ìë¹ì¤
         </h2>
 
         <div className="overflow-x-auto rounded-2xl border border-dark-border">
           <table className="w-full text-sm">
             <thead className="bg-dark-card border-b border-dark-border">
               <tr>
-                <th className="px-6 py-4 text-left font-semibold">기능</th>
+                <th className="px-6 py-4 text-left font-semibold">ê¸°ë¥</th>
                 <th className="px-6 py-4 text-center font-semibold text-primary">
-                  유철
+                  ì ì¶ë·ì»´
                 </th>
                 <th className="px-6 py-4 text-center font-semibold text-gray-400">
-                  경쟁사 A
+                  ê²½ìì¬ A
                 </th>
                 <th className="px-6 py-4 text-center font-semibold text-gray-400">
-                  경쟁사 B
+                  ê²½ìì¬ B
                 </th>
                 <th className="px-6 py-4 text-center font-semibold text-gray-400">
-                  경쟁사 C
+                  ê²½ìì¬ C
                 </th>
               </tr>
             </thead>
@@ -180,7 +205,7 @@ export default function PricingPage() {
                     {row.yuchul ? (
                       <CheckCircle className="inline text-success" size={20} />
                     ) : (
-                      <span className="text-gray-500">✗</span>
+                      <span className="text-gray-500">â</span>
                     )}
                   </td>
                   {row.competitors.map((competitor, idx) => (
@@ -191,7 +216,7 @@ export default function PricingPage() {
                       {competitor === true ? (
                         <CheckCircle className="inline text-success" size={20} />
                       ) : competitor === false ? (
-                        <span className="text-gray-500">✗</span>
+                        <span className="text-gray-500">â</span>
                       ) : (
                         <span className="text-sm">{competitor}</span>
                       )}
@@ -205,11 +230,11 @@ export default function PricingPage() {
 
         <div className="mt-8 p-6 bg-primary/10 border border-primary/20 rounded-xl text-center">
           <p className="text-lg font-semibold mb-2">
-            유철은 한국을 위해 특별히 설계되었습니다
+            ì ì¶ë·ì»´ì íêµ­ì ìí´ í¹ë³í ì¤ê³ëììµëë¤
           </p>
           <p className="text-gray-400">
-            개인정보보호법(PIPA)을 완전히 준수하며, 한국의 개인정보 유출에
-            최적화되어 있습니다.
+            ê°ì¸ì ë³´ë³´í¸ë²(PIPA)ì ìì í ì¤ìíë©°, íêµ­ì ê°ì¸ì ë³´ ì ì¶ì
+            ìµì íëì´ ììµëë¤.
           </p>
         </div>
       </section>
@@ -217,7 +242,7 @@ export default function PricingPage() {
       {/* FAQ Section */}
       <section className="max-w-3xl mx-auto mb-20">
         <h2 className="text-3xl font-bold mb-12 text-center">
-          자주 묻는 질문
+          ìì£¼ ë¬»ë ì§ë¬¸
         </h2>
 
         <div className="space-y-4">
@@ -229,7 +254,7 @@ export default function PricingPage() {
               <summary className="font-semibold text-white flex items-center justify-between">
                 {item.question}
                 <span className="text-primary group-open:rotate-180 transition-transform">
-                  ▼
+                  â¼
                 </span>
               </summary>
               <p className="text-gray-400 mt-4">{item.answer}</p>
@@ -241,10 +266,10 @@ export default function PricingPage() {
       {/* CTA Section */}
       <section className="max-w-3xl mx-auto text-center">
         <div className="bg-dark-card border border-primary/20 rounded-2xl p-12">
-          <h2 className="text-3xl font-bold mb-4">지금 시작하세요</h2>
+          <h2 className="text-3xl font-bold mb-4">ì§ê¸ ììíì¸ì</h2>
           <p className="text-gray-400 text-lg mb-8">
-            당신의 개인정보 보호를 위해 지금 바로 스캔을 시작하세요.
-            회원가입도 필요 없습니다.
+            ë¹ì ì ê°ì¸ì ë³´ ë³´í¸ë¥¼ ìí´ ì§ê¸ ë°ë¡ ì¤ìºì ììíì¸ì.
+            íìê°ìë íì ììµëë¤.
           </p>
 
           <Link
@@ -252,7 +277,7 @@ export default function PricingPage() {
             className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-primary text-white font-semibold rounded-lg hover:opacity-90 transition-smooth"
           >
             <Zap size={20} />
-            <span>무료 스캔 시작</span>
+            <span>ë¬´ë£ ì¤ìº ìì</span>
           </Link>
         </div>
       </section>
