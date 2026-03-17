@@ -40,9 +40,9 @@ export default function RiskGauge({
   };
 
   const getRiskLabel = () => {
-    if (normalizedScore < 30) return 'ìì ';
-    if (normalizedScore < 60) return 'ì£¼ì';
-    return 'ìí';
+    if (normalizedScore < 30) return '안전';
+    if (normalizedScore < 60) return '주의';
+    return '위험';
   };
 
   const getRiskLabelColor = () => {
@@ -101,8 +101,8 @@ export default function RiskGauge({
 
       {/* Labels */}
       <div className="mt-6 flex justify-between w-full max-w-xs text-xs text-gray-500 font-medium px-2">
-        <span>ìì£</span>
-        <span>ìí</span>
+        <span>안전</span>
+        <span>위험</span>
       </div>
     </div>
   );
