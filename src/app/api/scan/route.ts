@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
         riskScore,
         totalBreaches: findings.length,
         message: findings.length > 0
-          ? `${findings.length}건의 유출이 발견되었습니다.`
+          ? `${findings.length}걼의 유출이 발견되었습니다.`
           : '유출이 발견되지 않았습니다.',
       },
       { status: 200 }
@@ -171,29 +171,7 @@ function translateField(field: string): string {
     'passwords': '비밀번호',
     'hashed password': '비밀번호(해시)',
     'password hash': '비밀번호(해시)',
-    'name': '이馃',
-    'names': '이름',
-    'username': '사용자명',
-    'usernames': '사용자명',
-    'phone': '전화번호',
-    'phone number': '전화번호',
-    'phone numbers': '전화번호',
-    'ip address': 'IP주소',
-    'ip addresses': 'IP주소',
-    'address': '주소',
-    'physical addresses': '주소',
-    'date of birth': '생년월일',
-    'dates of birth': '생년월일',
-    'gender': '성별',
-    'genders': '성별',
-    'geographic location': '위치정보',
-    'geographic locations': '위치정보',
-    'social media profiles': 'SNS 프로필',
-  };
-  const lower = field.toLowerCase().trim();
-  return translations[lower] || field;
-}
-me': '이름',
+    'name': '이름',
     'names': '이름',
     'username': '사용자명',
     'usernames': '사용자명',
