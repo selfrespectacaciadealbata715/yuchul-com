@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAppStore, hydrateStore } from 'A/lib/store';
+import { useAppStore, hydrateStore } from '@/lib/store';
 import DashboardLayout from '@/components/DashboardLayout';
 import { Mail, Check, Send, AlertTriangle, ExternalLink, CheckCircle } from 'lucide-react';
 import { dataControllers } from '@/lib/removal-templates';
-import type { Finding } from 'A/lib/types';
+import type { Finding } from '@/lib/types';
 
 interface RemovalTarget {
   name: string;
@@ -90,7 +90,7 @@ export default function RemovalPage() {
 
     return `[개인정보 삭제 요청]
 
-${target.namee 귀사
+${target.name} 귀사
 
 저는 귀사가 보유하고 있는 저의 개인정보에 대해 「개인정보보호법」 제35조에 따라 삭제를 요청합니다.
 
@@ -219,22 +219,22 @@ ${date}
                 <div
                   key={target.source}
                   onClick={() => !isSent && toggleTarget(target.source)}
-                  className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-smooth ${
+                  className={"flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-smooth " + (
                     isSent
                       ? 'bg-success/5 border-success/20 cursor-default'
                       : isSelected
                         ? 'bg-primary/5 border-primary/30'
                         : 'bg-dark-bg border-dark-border hover:border-primary/20'
-                  }`}
+                  )}
                 >
                   <div className="flex items-center space-x-3">
-                    <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-smooth ${
+                    <div className={"w-5 h-5 rounded border-2 flex items-center justify-center transition-smooth " + (
                       isSent
                         ? 'bg-success border-success'
                         : isSelected
                           ? 'bg-primary border-primary'
                           : 'border-gray-600'
-                    }`}>
+                    )}>
                       {(isSelected || isSent) && <Check size={12} className="text-white" />}
                     </div>
                     <div>
@@ -247,13 +247,13 @@ ${date}
 
                   <div className="flex items-center space-x-2">
                     {target.finding && (
-                      <span className={`px-2 py-0.5 rounded text-xs ${
+                      <span className={"px-2 py-0.5 rounded text-xs " + (
                         target.finding.riskLevel === '높음'
                           ? 'bg-danger/20 text-danger'
                           : target.finding.riskLevel === '중간'
                             ? 'bg-warning/20 text-warning'
                             : 'bg-success/20 text-success'
-                      }`}>
+                      )}>
                         {target.finding.riskLevel}
                       </span>
                     )}
@@ -280,7 +280,7 @@ ${date}
               {sending
                 ? '발송 중...'
                 : selectedTargets.size > 0
-                  ? `${selectedTargets.size}몭0삭제 요청 발송`
+                  ? `${selectedTargets.size}건 삭제 요청 발송`
                   : '삭제할 곳을 선택하세요'}
             </span>
           </button>
@@ -321,7 +321,7 @@ ${date}
                         {new Date(request.createdAt).toLocaleDateString('ko-KR')} 요청
                       </p>
                     </div>
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status)}`}>
+                    <span className={"px-2.5 py-1 rounded-full text-xs font-medium " + getStatusColor(request.status)}>
                       {request.status}
                     </span>
                   </div>

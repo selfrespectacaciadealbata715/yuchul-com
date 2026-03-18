@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAppStore, hydrateStore } from 'A/lib/store';
+import { useAppStore, hydrateStore } from '@/lib/store';
 import DashboardLayout from '@/components/DashboardLayout';
 import RiskGauge from '@/components/RiskGauge';
 import Link from 'next/link';
@@ -46,7 +46,7 @@ export default function DashboardPage() {
             className="flex items-center space-x-2 px-6 py-3 bg-gradient-primary text-white font-medium rounded-xl hover:opacity-90 transition-smooth"
           >
             <Search size={18} />
-            <span>맀금 스캔하기</span>
+            <span>지금 스캔하기</span>
             <ArrowRight size={16} />
           </Link>
         </div>
@@ -55,7 +55,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-1">대시보드</h1>
-        <p className="text-gray-400 text-sm">개인정보 보안 상태를 한눈에 확인하세요'</p>
+        <p className="text-gray-400 text-sm">개인정보 보안 상태를 한눈에 확인하세요.</p>
       </div>
 
       {/* Risk + Stats */}
@@ -147,13 +147,13 @@ export default function DashboardPage() {
                       <p className="font-medium text-white text-sm truncate">{finding.source}</p>
                       <p className="text-xs text-gray-500 mt-1 truncate">{finding.description}</p>
                     </div>
-                    <span className={`ml-2 px-2 py-0.5 rounded text-xs font-medium flex-shrink-0 ${
+                    <span className={"ml-2 px-2 py-0.5 rounded text-xs font-medium flex-shrink-0 " + (
                       finding.riskLevel === '높음'
                         ? 'bg-danger/20 text-danger'
                         : finding.riskLevel === '중간'
                           ? 'bg-warning/20 text-warning'
                           : 'bg-success/20 text-success'
-                    }`}>
+                    )}>
                       {finding.riskLevel}
                     </span>
                   </div>
@@ -189,13 +189,13 @@ export default function DashboardPage() {
                 >
                   <div className="flex items-start justify-between mb-2">
                     <p className="font-medium text-white text-sm">요청 #{request.id.slice(-4)}</p>
-                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                    <span className={"px-2 py-0.5 rounded text-xs font-medium " + (
                       request.status === '완료'
                         ? 'bg-success/20 text-success'
                         : request.status === '진행중'
                           ? 'bg-warning/20 text-warning'
                           : 'bg-primary/20 text-primary'
-                    }`}>
+                    )}>
                       {request.status}
                     </span>
                   </div>
@@ -216,6 +216,5 @@ export default function DashboardPage() {
         </div>
       </div>
     </DashboardLayout>
-  
-  
-ࠄ ��
+  );
+}

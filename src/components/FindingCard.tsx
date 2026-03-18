@@ -1,7 +1,7 @@
 'use client';
 
 import { AlertCircle, CheckCircle, Trash2, Archive } from 'lucide-react';
-import type { Finding, RiskLevel } from 'A/lib/types';
+import type { Finding, RiskLevel } from '@/lib/types';
 
 interface FindingCardProps {
   finding: Finding;
@@ -73,7 +73,7 @@ export default function FindingCard({
             </span>
           </div>
         </div>
-        <div className={`flex items-center space-x-2 px-2 py-1 rounded border ${getRiskLevelColor(finding.riskLevel)}`}>
+        <div className={"flex items-center space-x-2 px-2 py-1 rounded border " + getRiskLevelColor(finding.riskLevel)}>
           {getRiskIcon(finding.riskLevel)}
           <span className="text-sm font-medium">{finding.riskLevel}</span>
         </div>

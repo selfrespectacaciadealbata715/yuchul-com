@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppStore, hydrateStore } from 'A/lib/store';
-import ScanForm from 'A/components/ScanForm';
+import { useAppStore, hydrateStore } from '@/lib/store';
+import ScanForm from '@/components/ScanForm';
 import FindingCard from '@/components/FindingCard';
 import { ArrowLeft, CheckCircle, Shield, AlertTriangle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import type { ScanInput, Finding } from 'A/lib/types';
+import type { ScanInput, Finding } from '@/lib/types';
 
 export default function ScanPage() {
   const router = useRouter();
@@ -218,11 +218,10 @@ export default function ScanPage() {
         {scanResults && !isScanning && (
           <div className="animate-slideIn space-y-6">
             {/* Summary Card */}
-            <div className={`rounded-2xl p-8 border ${
-              scanResults.findings.length > 0
+            <div className={"rounded-2xl p-8 border " + (scanResults.findings.length > 0
                 ? 'bg-danger/5 border-danger/20'
                 : 'bg-success/5 border-success/20'
-            }`}>
+            )}>
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   {scanResults.findings.length > 0 ? (

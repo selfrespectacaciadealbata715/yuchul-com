@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAppStore, hydrateStore } from 'A/lib/store';
+import { useAppStore, hydrateStore } from '@/lib/store';
 import DashboardLayout from '@/components/DashboardLayout';
-import FindingCard from 'A/components/FindingCard';
+import FindingCard from '@/components/FindingCard';
 import type { BreachSource } from '@/lib/types';
 
 export default function FindingsPage() {
@@ -55,11 +55,11 @@ export default function FindingsPage() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-smooth whitespace-nowrap ${
+              className={"px-4 py-2 rounded-lg text-sm font-medium transition-smooth whitespace-nowrap " + (
                 activeTab === tab
                   ? 'bg-primary/10 text-primary border border-primary/20'
                   : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
-              }`}
+              )}
             >
               {tab} ({count})
             </button>
